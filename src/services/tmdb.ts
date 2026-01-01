@@ -30,6 +30,11 @@ const tmdb = axios.create({
     },
 });
 
+export const getTrendingMoviesToday = async (): Promise<TMDBMovie[]> => {
+    const response = await tmdb.get<TMDBResponse>('/trending/movie/day');
+    return response.data.results.filter(movie => movie.poster_path);
+};
+
 export const getTrendingMovies = async (): Promise<TMDBMovie[]> => {
     const response = await tmdb.get<TMDBResponse>('/trending/movie/week');
     return response.data.results.filter(movie => movie.poster_path);
