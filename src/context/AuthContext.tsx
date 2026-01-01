@@ -59,7 +59,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const login = async (userData: User, password?: string) => {
         if (!password) throw new Error("Password required");
-        await signInWithEmailAndPassword(auth, userData.email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, userData.email, password);
+
+        if (!userCredential.user.emailVerified) {
+            await signOut(auth);
+            alert("Please verify your email first");
+            throw new Error("Please verify your email first");
+        }
     };
 
     const logout = async () => {
@@ -75,12 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         });
 
         await sendEmailVerification(userCredential.user);
-
-        // Update local state immediately to reflect name
-        setUser({
-            ...userData,
-            emailVerified: false
-        });
+        await signOut(auth);
     };
 
     const updateUser = async (data: Partial<User>) => {
@@ -114,7 +115,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, user, loading, login, logout, register, updateUser, resendVerificationEmail, deleteAccount }}>
-            {!loading && children}
+            {loading ? (
+                <div className="flex items-center justify-center min-h-screen bg-black text-white">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+                </div>
+            ) : (
+                children
+            )}
         </AuthContext.Provider>
     );
 };
