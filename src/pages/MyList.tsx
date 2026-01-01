@@ -3,12 +3,13 @@ import { useAuth } from '../context/AuthContext';
 import { useList, type ListType } from '../context/ListContext';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Star, X } from 'lucide-react';
 
 const MyList = () => {
-    const { isLoggedIn, login } = useAuth();
+    const { isLoggedIn } = useAuth();
     const { lists, removeFromList } = useList();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<ListType>('watching');
 
     const tabs: { id: ListType; label: string }[] = [
@@ -25,7 +26,7 @@ const MyList = () => {
                     <h2 className="text-2xl font-bold mb-4 text-white">Login Required</h2>
                     <p className="text-gray-400 mb-6">Please login to access your personal list and track your favorite movies and shows.</p>
                     <button
-                        onClick={login}
+                        onClick={() => navigate('/auth')}
                         className="px-6 py-3 bg-accent hover:bg-accent/80 text-white rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-accent/20"
                     >
                         Login to use this part

@@ -1,6 +1,7 @@
-const https = require('https');
+import https from 'https';
+import 'dotenv/config';
 
-const API_KEY = 'b7662c4f807bfab908abc99e0459e5ca';
+const API_KEY = process.env.VITE_TMDB_API_KEY;
 const TEST_IMDB_ID = 'tt23743204';
 
 const verify = () => {
