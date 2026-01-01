@@ -191,10 +191,14 @@ const Profile = () => {
 
                         {/* Delete Account Button */}
                         <button
-                            onClick={() => {
+                            onClick={async () => {
                                 if (window.confirm('Are you sure you want to delete your account? This action cannot be undone and will delete all your data.')) {
-                                    deleteAccount();
-                                    navigate('/');
+                                    try {
+                                        await deleteAccount();
+                                        navigate('/');
+                                    } catch (error: any) {
+                                        alert(error.message);
+                                    }
                                 }
                             }}
                             className="w-full flex items-center justify-between p-4 bg-red-500/10 rounded-lg hover:bg-red-500/20 transition-colors group mt-4 border border-red-500/20"

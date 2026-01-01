@@ -106,10 +106,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const deleteAccount = async () => {
         if (auth.currentUser) {
-            await auth.currentUser.delete();
-            localStorage.removeItem('userLists'); // Clear local data
-            setUser(null);
-            setIsLoggedIn(false);
+            try {
+                await auth.currentUser.delete();
+                localStorage.removeItem('userLists'); // Clear local data
+                setUser(null);
+                setIsLoggedIn(false);
+            } catch (error: any) {
+                if (error.code === 'auth/requires-recent-login') {
+                    throw new Error("Security check: Please log out and log back in to delete your account.");
+                }
+                throw error;
+            }
         }
     };
 
