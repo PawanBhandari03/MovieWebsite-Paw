@@ -34,19 +34,19 @@ const tmdb = axios.create({
 
 export const getTrendingMoviesToday = async (): Promise<TMDBMovie[]> => {
     const response = await tmdb.get<TMDBResponse>('/trending/movie/day');
-    return response.data?.results?.filter(movie => movie.poster_path) || [];
+    return response.data.results.filter(movie => movie.poster_path);
 };
 
 export const getTrendingMovies = async (): Promise<TMDBMovie[]> => {
     const response = await tmdb.get<TMDBResponse>('/trending/movie/week');
-    return response.data?.results?.filter(movie => movie.poster_path) || [];
+    return response.data.results.filter(movie => movie.poster_path);
 };
 
 export const getPopularMovies = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/movie/popular', { params: { page } });
     return {
         ...response.data,
-        results: response.data?.results?.filter(movie => movie.poster_path) || []
+        results: response.data.results.filter(movie => movie.poster_path)
     };
 };
 
@@ -54,7 +54,7 @@ export const getTopRatedMovies = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/movie/top_rated', { params: { page } });
     return {
         ...response.data,
-        results: response.data?.results?.filter(movie => movie.poster_path) || []
+        results: response.data.results.filter(movie => movie.poster_path)
     };
 };
 
@@ -62,7 +62,7 @@ export const getUpcomingMovies = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/movie/upcoming', { params: { page } });
     return {
         ...response.data,
-        results: response.data?.results?.filter(movie => movie.poster_path) || []
+        results: response.data.results.filter(movie => movie.poster_path)
     };
 };
 
@@ -70,7 +70,7 @@ export const searchMovies = async (query: string, page = 1): Promise<TMDBRespons
     const response = await tmdb.get<TMDBResponse>('/search/movie', { params: { query, page } });
     return {
         ...response.data,
-        results: response.data?.results?.filter(movie => movie.poster_path) || []
+        results: response.data.results.filter(movie => movie.poster_path)
     };
 };
 
@@ -78,9 +78,9 @@ export const searchMulti = async (query: string, page = 1): Promise<TMDBResponse
     const response = await tmdb.get<TMDBResponse>('/search/multi', { params: { query, page } });
     return {
         ...response.data,
-        results: response.data?.results?.filter(item =>
+        results: response.data.results.filter(item =>
             item.poster_path && (item.media_type === 'movie' || item.media_type === 'tv')
-        ) || []
+        )
     };
 };
 
@@ -89,7 +89,7 @@ export const getWebSeries = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/tv/popular', { params: { page } });
     return {
         ...response.data,
-        results: response.data?.results?.filter(show => show.poster_path) || []
+        results: response.data.results.filter(show => show.poster_path)
     };
 };
 
@@ -104,7 +104,7 @@ export const getDramas = async (page = 1): Promise<TMDBResponse> => {
     });
     return {
         ...response.data,
-        results: response.data?.results?.filter(show => show.poster_path) || []
+        results: response.data.results.filter(show => show.poster_path)
     };
 };
 
@@ -119,7 +119,7 @@ export const getAnime = async (page = 1): Promise<TMDBResponse> => {
     });
     return {
         ...response.data,
-        results: response.data?.results?.filter(show => show.poster_path) || []
+        results: response.data.results.filter(show => show.poster_path)
     };
 };
 
