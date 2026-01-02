@@ -129,6 +129,43 @@ const MovieDetails = () => {
         ? `https://rivestream.org/embed?type=movie&id=${id}`
         : `https://rivestream.org/embed?type=tv&id=${id}&season=${selectedSeason}&episode=${selectedEpisode}`;
 
+    // Video loading state
+    const [iframeLoading, setIframeLoading] = useState(true);
+    const [iframeError, setIframeError] = useState(false);
+    const [showFallback, setShowFallback] = useState(false);
+
+    // Reset states when changing content
+    useEffect(() => {
+        setIframeLoading(true);
+        setIframeError(false);
+        setShowFallback(false);
+    }, [id, mediaType, selectedSeason, selectedEpisode]);
+
+    // Timeout for video loading - if it takes too long, suggest help
+    useEffect(() => {
+        if (!iframeLoading) return;
+
+        const timer = setTimeout(() => {
+            if (iframeLoading) {
+                setShowFallback(true);
+            }
+        }, 8000); // 8 seconds timeout
+
+        return () => clearTimeout(timer);
+    }, [iframeLoading]);
+
+    const handleIframeLoad = () => {
+        setIframeLoading(false);
+        setIframeError(false);
+        setShowFallback(false);
+    };
+
+    const handleIframeError = () => {
+        setIframeLoading(false);
+        setIframeError(true);
+        setShowFallback(true);
+    };
+
     return (
         <div className="min-h-screen bg-primary flex flex-col pt-20">
             <div className="px-4 md:px-8">
@@ -144,14 +181,45 @@ const MovieDetails = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="w-full max-w-6xl"
                 >
-                    <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800 mb-8">
+                    <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800 mb-8 relative group">
+                        {/* Loading State */}
+                        {iframeLoading && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-10 transition-opacity duration-300">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+                            </div>
+                        )}
+
+                        {/* Fallback Message */}
+                        {showFallback && (
+                            <div className="absolute top-0 right-0 p-4 z-20">
+                                <div className="bg-gray-900/90 border border-gray-700 text-white text-sm p-4 rounded-lg shadow-lg flex flex-col gap-2 max-w-xs animate-in fade-in slide-in-from-top-2">
+                                    <p className={`font-semibold ${iframeError ? 'text-red-400' : 'text-yellow-400'}`}>
+                                        {iframeError ? 'Video Failed to Load' : 'Taking a long time?'}
+                                    </p>
+                                    <p className="text-gray-300">
+                                        {iframeError
+                                            ? 'The video source returned an error. It might be blocked or unavailable.'
+                                            : 'Your network might be blocking the video player, or the source is slow.'}
+                                    </p>
+                                    <button
+                                        onClick={() => window.location.reload()}
+                                        className="mt-2 bg-secondary hover:bg-white/20 text-white py-1.5 px-3 rounded text-xs transition-colors"
+                                    >
+                                        Reload Page
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
                         <iframe
                             src={embedUrl}
-                            className="w-full h-full"
+                            className={`w-full h-full transition-opacity duration-500 ${iframeLoading ? 'opacity-0' : 'opacity-100'}`}
                             allowFullScreen
                             allow="autoplay; encrypted-media; picture-in-picture"
                             referrerPolicy="origin"
                             title="Player"
+                            onLoad={handleIframeLoad}
+                            onError={handleIframeError}
                         />
                     </div>
 

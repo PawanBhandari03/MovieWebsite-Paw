@@ -12,16 +12,25 @@ const Home = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const [today, week, month] = await Promise.all([
+                const results = await Promise.allSettled([
                     getTrendingMoviesToday(),
                     getTrendingMovies(),
                     getPopularMovies() // Using popular as proxy for monthly trending
                 ]);
-                setTrendingToday(today);
-                setTrendingWeek(week);
-                setTrendingMonth(month?.results || []);
+
+                if (results[0].status === 'fulfilled') {
+                    setTrendingToday(results[0].value);
+                }
+
+                if (results[1].status === 'fulfilled') {
+                    setTrendingWeek(results[1].value);
+                }
+
+                if (results[2].status === 'fulfilled') {
+                    setTrendingMonth(results[2].value?.results || []);
+                }
             } catch (error) {
-                console.error("Failed to fetch movies:", error);
+                console.error("Critical failure in fetching movies:", error);
             }
         };
         fetchMovies();
