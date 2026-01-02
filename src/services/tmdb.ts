@@ -72,6 +72,30 @@ export const searchMovies = async (query: string, page = 1): Promise<TMDBRespons
     };
 };
 
+// Web Series (TV Shows)
+export const getWebSeries = async (page = 1): Promise<TMDBResponse> => {
+    const response = await tmdb.get<TMDBResponse>('/tv/popular', { params: { page } });
+    return {
+        ...response.data,
+        results: response.data.results.filter(show => show.poster_path)
+    };
+};
+
+// Dramas (Asian Dramas - Filtering for Korean primarily as "Kdrama" is standard)
+export const getDramas = async (page = 1): Promise<TMDBResponse> => {
+    const response = await tmdb.get<TMDBResponse>('/discover/tv', {
+        params: {
+            page,
+            with_original_language: 'ko', // Korean
+            sort_by: 'popularity.desc'
+        }
+    });
+    return {
+        ...response.data,
+        results: response.data.results.filter(show => show.poster_path)
+    };
+};
+
 export const getAnime = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/discover/tv', {
         params: {

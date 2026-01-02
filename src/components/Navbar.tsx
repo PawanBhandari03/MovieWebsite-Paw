@@ -54,6 +54,9 @@ const Navbar = () => {
         { name: 'Home', path: '/' },
         { name: 'Movies', path: '/movies' },
         { name: 'Anime', path: '/anime' },
+        { name: 'Web Series', path: '/web-series' },
+        { name: 'Dramas', path: '/dramas' },
+        { name: 'Genres', path: '/genres' },
 
         { name: 'My List', path: '/mylist' },
     ];

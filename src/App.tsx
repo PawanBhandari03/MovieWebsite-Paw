@@ -13,6 +13,9 @@ import Anime from './pages/Anime';
 import MyList from './pages/MyList';
 import Search from './pages/Search';
 import Profile from './pages/Profile';
+import Genres from './pages/Genres';
+import WebSeries from './pages/WebSeries';
+import Dramas from './pages/Dramas';
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/movies" element={<Movies />} />
               <Route path="/anime" element={<Anime />} />
+              <Route path="/genres" element={<Genres />} />
+              <Route path="/web-series" element={<WebSeries />} />
+              <Route path="/dramas" element={<Dramas />} />
 
               <Route path="/mylist" element={<MyList />} />
               <Route path="/auth" element={<Auth />} />
