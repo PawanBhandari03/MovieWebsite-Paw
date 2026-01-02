@@ -9,11 +9,14 @@ interface MovieProps {
     rating: number;
     year: number;
     category: string;
+    mediaType?: 'movie' | 'tv';
 }
 
-const MovieCard = ({ id, title, image, rating, year, category }: MovieProps) => {
+const MovieCard = ({ id, title, image, rating, year, category, mediaType }: MovieProps) => {
+    const linkPath = mediaType === 'tv' ? `/tv/${id}` : `/movie/${id}`;
+
     return (
-        <Link to={`/movie/${id}`} state={{ title, image, rating, year, category }}>
+        <Link to={linkPath} state={{ title, image, rating, year, category, mediaType }}>
             <motion.div
                 className="group relative h-[300px] md:h-[350px] rounded-xl overflow-hidden cursor-pointer"
                 whileHover={{

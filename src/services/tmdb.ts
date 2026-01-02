@@ -14,6 +14,8 @@ export interface TMDBMovie {
     first_air_date?: string;
     vote_average: number;
     genre_ids: number[];
+    media_type?: 'movie' | 'tv' | 'person';
+    origin_country?: string[];
 }
 
 export interface TMDBResponse {
@@ -69,6 +71,16 @@ export const searchMovies = async (query: string, page = 1): Promise<TMDBRespons
     return {
         ...response.data,
         results: response.data.results.filter(movie => movie.poster_path)
+    };
+};
+
+export const searchMulti = async (query: string, page = 1): Promise<TMDBResponse> => {
+    const response = await tmdb.get<TMDBResponse>('/search/multi', { params: { query, page } });
+    return {
+        ...response.data,
+        results: response.data.results.filter(item =>
+            item.poster_path && (item.media_type === 'movie' || item.media_type === 'tv')
+        )
     };
 };
 

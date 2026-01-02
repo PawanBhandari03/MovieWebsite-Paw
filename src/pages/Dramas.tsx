@@ -50,6 +50,7 @@ const Dramas = () => {
                             rating={drama.vote_average}
                             year={new Date(drama.first_air_date || drama.release_date || Date.now()).getFullYear()}
                             category="Drama"
+                            mediaType="tv"
                         />
                     ))
                 )}

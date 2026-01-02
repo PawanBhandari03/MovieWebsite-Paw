@@ -42,6 +42,7 @@ const Home = () => {
                             rating={movie.vote_average}
                             year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
                             category="Movie"
+                            mediaType="movie"
                         />
                     ))}
                 </Section>
@@ -56,6 +57,7 @@ const Home = () => {
                             rating={movie.vote_average}
                             year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
                             category="Movie"
+                            mediaType="movie"
                         />
                     ))}
                 </Section>
@@ -70,6 +72,7 @@ const Home = () => {
                             rating={movie.vote_average}
                             year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
                             category="Movie"
+                            mediaType="movie"
                         />
                     ))}
                 </Section>

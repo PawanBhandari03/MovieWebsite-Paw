@@ -50,6 +50,7 @@ const WebSeries = () => {
                             rating={show.vote_average}
                             year={new Date(show.first_air_date || show.release_date || Date.now()).getFullYear()}
                             category="TV Show"
+                            mediaType="tv"
                         />
                     ))
                 )}

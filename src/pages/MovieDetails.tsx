@@ -25,13 +25,17 @@ const MovieDetails = () => {
     const location = useLocation();
     const [movie, setMovie] = useState<TVShowDetails | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [mediaType, setMediaType] = useState<'movie' | 'tv'>('movie');
+    const [error, setError] = useState<string | null>(null);
     const [selectedSeason, setSelectedSeason] = useState(1);
     const [selectedEpisode, setSelectedEpisode] = useState(1);
     const [episodes, setEpisodes] = useState<Episode[]>([]);
     const { addToList, checkListStatus } = useList();
     const { isLoggedIn } = useAuth();
     const navigate = useNavigate();
+
+    // Derived state - instant, no useEffect lag
+    const isTvShow = location.pathname.includes('/tv/');
+    const mediaType = isTvShow ? 'tv' : 'movie';
 
     const handleAddToList = (type: ListType) => {
         if (!isLoggedIn) {
@@ -51,37 +55,42 @@ const MovieDetails = () => {
     };
 
     useEffect(() => {
-        const state = location.state as { category?: string } | null;
-        if (state?.category === 'Anime' || state?.category === 'TV Show') {
-            setMediaType('tv');
-        } else {
-            setMediaType('movie');
-        }
-    }, [location.state]);
-
-    useEffect(() => {
         const fetchDetails = async () => {
-            if (id) {
-                setIsLoading(true);
-                try {
-                    if (mediaType === 'movie') {
-                        const data = await getMovieDetails(id);
-                        setMovie(data);
-                    } else {
-                        const data = await getTVDetails(Number(id));
-                        setMovie(data);
+            if (!id) return;
+
+            setIsLoading(true);
+            setError(null);
+            setMovie(null);
+
+            try {
+                if (mediaType === 'movie') {
+                    console.log('Fetching movie details for ID:', id);
+                    const data = await getMovieDetails(id);
+                    setMovie(data);
+                } else {
+                    console.log('Fetching TV details for ID:', id);
+                    const data = await getTVDetails(Number(id));
+                    setMovie(data);
+                    try {
                         const seasonData = await getTVSeasonDetails(Number(id), 1);
                         setEpisodes(seasonData.episodes);
+                    } catch (e) {
+                        console.warn("Failed to fetch season details", e);
                     }
-                } catch (error) {
-                    console.error("Failed to fetch details:", error);
-                } finally {
-                    setIsLoading(false);
                 }
+            } catch (error: any) {
+                console.error("Failed to fetch details:", error);
+                setError(error.message || "Failed to load content");
+                setMovie(null);
+            } finally {
+                setIsLoading(false);
             }
         };
+
         fetchDetails();
     }, [id, mediaType]);
+
+    // ... handle handleAddToList ...
 
     useEffect(() => {
         const fetchEpisodes = async () => {
@@ -101,8 +110,19 @@ const MovieDetails = () => {
         return <div className="min-h-screen bg-primary flex items-center justify-center text-white">Loading...</div>;
     }
 
-    if (!movie) {
-        return <div className="min-h-screen bg-primary flex items-center justify-center text-white">Content not found</div>;
+    if (error || !movie) {
+        return (
+            <div className="min-h-screen bg-primary flex flex-col items-center justify-center text-white gap-4">
+                <div className="text-xl">Content not found</div>
+                <div className="text-sm text-gray-400">
+                    {mediaType === 'tv' ? 'TV Show' : 'Movie'} ID: {id}
+                </div>
+                {error && <div className="text-red-400 text-sm">Error: {error}</div>}
+                <Link to="/home" className="px-4 py-2 bg-secondary rounded-lg hover:bg-accent transition-colors">
+                    Back to Home
+                </Link>
+            </div>
+        );
     }
 
     const embedUrl = mediaType === 'movie'

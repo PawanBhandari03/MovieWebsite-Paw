@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import Section from '../components/Section';
 import MovieCard from '../components/MovieCard';
-import { searchMovies, getImageUrl, type TMDBMovie } from '../services/tmdb';
+import { searchMulti, getImageUrl, type TMDBMovie } from '../services/tmdb';
 import { useEffect, useState } from 'react';
 
 const Search = () => {
@@ -15,7 +15,7 @@ const Search = () => {
             if (query) {
                 setIsLoading(true);
                 try {
-                    const data = await searchMovies(query);
+                    const data = await searchMulti(query);
                     setResults(data.results);
                 } catch (error) {
                     console.error("Search failed:", error);
@@ -29,21 +29,32 @@ const Search = () => {
         fetchResults();
     }, [query]);
 
+    const getCategory = (item: TMDBMovie) => {
+        if (item.media_type === 'tv') {
+            // Simple heuristic to label known genres if we had them, otherwise just TV Show
+            if (item.origin_country?.includes('KR')) return 'Drama'; // Optional polish
+            if (item.origin_country?.includes('JP') && item.genre_ids?.includes(16)) return 'Anime';
+            return 'TV Show';
+        }
+        return 'Movie';
+    };
+
     return (
         <div className="pt-24 pb-20 min-h-screen bg-primary">
             <Section title={`Search Results for "${query}"`}>
                 {isLoading ? (
                     <div className="text-white text-center w-full py-10">Searching...</div>
                 ) : results.length > 0 ? (
-                    results.map((movie) => (
+                    results.map((item) => (
                         <MovieCard
-                            key={movie.id}
-                            id={movie.id}
-                            title={movie.title || movie.name || 'Unknown'}
-                            image={getImageUrl(movie.poster_path)}
-                            rating={movie.vote_average}
-                            year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
-                            category="Movie"
+                            key={item.id}
+                            id={item.id}
+                            title={item.title || item.name || 'Unknown'}
+                            image={getImageUrl(item.poster_path)}
+                            rating={item.vote_average}
+                            year={new Date(item.release_date || item.first_air_date || Date.now()).getFullYear()}
+                            category={getCategory(item)}
+                            mediaType={item.media_type as 'movie' | 'tv'}
                         />
                     ))
                 ) : (
