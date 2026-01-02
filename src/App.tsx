@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import Genres from './pages/Genres';
 import WebSeries from './pages/WebSeries';
 import Dramas from './pages/Dramas';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
         <Router>
           <Layout>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/movies" element={<Movies />} />
               <Route path="/anime" element={<Anime />} />
               <Route path="/genres" element={<Genres />} />

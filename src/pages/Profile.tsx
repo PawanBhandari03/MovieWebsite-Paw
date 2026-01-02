@@ -32,7 +32,10 @@ const Profile = () => {
         setActiveSection(activeSection === section ? null : section);
     };
 
-    if (!user) return null;
+    if (!user) {
+        navigate('/');
+        return null;
+    }
 
     return (
         <div className="pt-24 pb-20 min-h-screen bg-primary flex justify-center">

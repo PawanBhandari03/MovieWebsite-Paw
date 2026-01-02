@@ -84,14 +84,19 @@ const Hero = () => {
                 <div className="max-w-2xl space-y-6 pt-20">
                     <motion.div
                         key={`content-${currentIndex}`}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                     >
-                        <span className="text-accent font-semibold tracking-wider uppercase text-sm">
+                        <motion.span
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className="text-accent font-semibold tracking-wider uppercase text-sm"
+                        >
                             #{currentIndex + 1} Trending
-                        </span>
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight drop-shadow-lg">
+                        </motion.span>
+                        <h1 className="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight drop-shadow-2xl">
                             {currentMovie.title || currentMovie.name}
                         </h1>
                     </motion.div>
@@ -100,8 +105,8 @@ const Hero = () => {
                         key={`desc-${currentIndex}`}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className="text-gray-300 text-lg md:text-xl line-clamp-3 drop-shadow-md"
+                        transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                        className="text-gray-300 text-lg md:text-xl line-clamp-3 drop-shadow-lg max-w-xl"
                     >
                         {currentMovie.overview}
                     </motion.p>

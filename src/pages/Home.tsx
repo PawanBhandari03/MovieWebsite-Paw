@@ -19,7 +19,7 @@ const Home = () => {
                 ]);
                 setTrendingToday(today);
                 setTrendingWeek(week);
-                setTrendingMonth(month.results);
+                setTrendingMonth(month?.results || []);
             } catch (error) {
                 console.error("Failed to fetch movies:", error);
             }

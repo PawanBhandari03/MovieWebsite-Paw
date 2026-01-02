@@ -36,7 +36,7 @@ const MyList = () => {
         );
     }
 
-    const currentList = lists[activeTab];
+    const currentList = lists[activeTab] || [];
 
     return (
         <div className="pt-24 pb-20 min-h-screen bg-primary">

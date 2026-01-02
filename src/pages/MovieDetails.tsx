@@ -112,7 +112,7 @@ const MovieDetails = () => {
     return (
         <div className="min-h-screen bg-primary flex flex-col pt-20">
             <div className="px-4 md:px-8">
-                <Link to="/" className="inline-flex items-center gap-2 text-white hover:text-accent transition-colors mb-6">
+                <Link to="/home" className="inline-flex items-center gap-2 text-white hover:text-accent transition-colors mb-6">
                     <ArrowLeft className="w-6 h-6" />
                     <span>Back to Home</span>
                 </Link>

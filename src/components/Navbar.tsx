@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Bell, User, Menu, X, PawPrint } from 'lucide-react';
+import { Search, User, Menu, X, PawPrint } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import { useAuth } from '../context/AuthContext';
+import { searchMovies, getImageUrl, type TMDBMovie } from '../services/tmdb';
 
 const Navbar = () => {
     const { isLoggedIn } = useAuth();
@@ -11,7 +12,8 @@ const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [recommendations, setRecommendations] = useState<TMDBMovie[]>([]);
+    const [showRecommendations, setShowRecommendations] = useState(false);
 
     const navigate = useNavigate();
     const searchInputRef = useRef<HTMLInputElement>(null);
@@ -35,23 +37,45 @@ const Navbar = () => {
         }
     }, [isSearchOpen]);
 
+    useEffect(() => {
+        const fetchRecommendations = async () => {
+            if (searchQuery.trim().length >= 2) {
+                try {
+                    const response = await searchMovies(searchQuery);
+                    setRecommendations(response.results.slice(0, 5)); // Limit to 5 results
+                    setShowRecommendations(true);
+                } catch (error) {
+                    console.error("Error fetching recommendations:", error);
+                }
+            } else {
+                setRecommendations([]);
+                setShowRecommendations(false);
+            }
+        };
+
+        const timeoutId = setTimeout(fetchRecommendations, 300); // Debounce
+        return () => clearTimeout(timeoutId);
+    }, [searchQuery]);
+
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {
             navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
             setIsSearchOpen(false);
             setSearchQuery('');
+            setShowRecommendations(false);
         }
     };
 
-    const notifications = [
-        { id: 1, text: "New movie 'The Gentleman' added!", time: "2m ago" },
-        { id: 2, text: "Your subscription expires in 3 days", time: "1h ago" },
-        { id: 3, text: "Top 10 movies of the week", time: "5h ago" },
-    ];
+    const handleRecommendationClick = (id: number) => {
+        navigate(`/movie/${id}`);
+        setIsSearchOpen(false);
+        setSearchQuery('');
+        setShowRecommendations(false);
+    };
 
     const navLinks = [
-        { name: 'Home', path: '/' },
+        { name: 'Home', path: '/home' },
         { name: 'Movies', path: '/movies' },
         { name: 'Anime', path: '/anime' },
         { name: 'Web Series', path: '/web-series' },
@@ -70,9 +94,9 @@ const Navbar = () => {
         >
             <div className="flex items-center justify-between max-w-7xl mx-auto">
                 {/* Logo */}
-                <Link to="/" className="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500">
+                <Link to="/home" className="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500">
                     <PawPrint className="w-8 h-8 text-accent" />
-                    <span>Paw</span>
+                    <span>Pawflix</span>
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -92,25 +116,58 @@ const Navbar = () => {
                 {/* Icons */}
                 <div className="hidden md:flex items-center space-x-6 relative">
                     {/* Search Bar */}
-                    <div className="flex items-center">
+                    <div className="flex items-center relative">
                         <AnimatePresence>
                             {isSearchOpen && (
-                                <motion.form
+                                <motion.div
                                     initial={{ width: 0, opacity: 0 }}
-                                    animate={{ width: 200, opacity: 1 }}
+                                    animate={{ width: 300, opacity: 1 }}
                                     exit={{ width: 0, opacity: 0 }}
-                                    onSubmit={handleSearchSubmit}
-                                    className="mr-2 overflow-hidden"
+                                    className="mr-2 relative"
                                 >
-                                    <input
-                                        ref={searchInputRef}
-                                        type="text"
-                                        placeholder="Titles, people, genres"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="w-full bg-secondary/50 border border-gray-600 rounded-full px-4 py-1 text-sm text-white focus:outline-none focus:border-accent"
-                                    />
-                                </motion.form>
+                                    <form onSubmit={handleSearchSubmit}>
+                                        <input
+                                            ref={searchInputRef}
+                                            type="text"
+                                            placeholder="Titles, people, genres"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            className="w-full bg-secondary/50 border border-gray-600 rounded-full px-4 py-1 text-sm text-white focus:outline-none focus:border-accent"
+                                        />
+                                    </form>
+
+                                    {/* Recommendations Dropdown */}
+                                    {showRecommendations && recommendations.length > 0 && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="absolute top-full left-0 w-full bg-secondary/95 backdrop-blur-xl border border-gray-800 rounded-xl mt-2 overflow-hidden shadow-2xl z-50"
+                                        >
+                                            {recommendations.map((movie, index) => (
+                                                <motion.div
+                                                    key={movie.id}
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: index * 0.05 }}
+                                                    onClick={() => handleRecommendationClick(movie.id)}
+                                                    className="flex items-center gap-3 p-3 hover:bg-white/10 cursor-pointer transition-colors border-b border-gray-700/50 last:border-0"
+                                                >
+                                                    <img
+                                                        src={getImageUrl(movie.poster_path, 'w92')}
+                                                        alt={movie.title}
+                                                        className="w-10 h-14 object-cover rounded"
+                                                    />
+                                                    <div>
+                                                        <p className="text-sm font-medium text-white line-clamp-1">{movie.title}</p>
+                                                        <p className="text-xs text-gray-400">{movie.release_date?.split('-')[0] || 'N/A'}</p>
+                                                    </div>
+                                                </motion.div>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </motion.div>
                             )}
                         </AnimatePresence>
                         <Search
@@ -119,36 +176,7 @@ const Navbar = () => {
                         />
                     </div>
 
-                    {/* Notifications */}
-                    <div className="relative">
-                        <Bell
-                            className="w-5 h-5 text-gray-300 hover:text-white cursor-pointer transition-colors"
-                            onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                        />
-                        {/* Notification Dropdown */}
-                        <AnimatePresence>
-                            {isNotificationsOpen && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: 10 }}
-                                    className="absolute right-0 top-full mt-4 w-80 bg-secondary/95 backdrop-blur-xl border border-gray-800 rounded-xl shadow-2xl overflow-hidden"
-                                >
-                                    <div className="p-4 border-b border-gray-800">
-                                        <h3 className="text-white font-semibold">Notifications</h3>
-                                    </div>
-                                    <div className="max-h-64 overflow-y-auto">
-                                        {notifications.map((notif) => (
-                                            <div key={notif.id} className="p-4 hover:bg-white/5 transition-colors border-b border-gray-800/50 last:border-0 cursor-pointer">
-                                                <p className="text-sm text-gray-200">{notif.text}</p>
-                                                <p className="text-xs text-gray-500 mt-1">{notif.time}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+
 
                     {/* Profile */}
                     <Link to={isLoggedIn ? "/profile" : "/auth"}>

@@ -21,13 +21,24 @@ const ListContext = createContext<ListContextType | undefined>(undefined);
 
 export const ListProvider = ({ children }: { children: ReactNode }) => {
     const [lists, setLists] = useState<Record<ListType, ListItem[]>>(() => {
-        const savedLists = localStorage.getItem('userLists');
-        return savedLists ? JSON.parse(savedLists) : {
-            watched: [],
-            watching: [],
-            pending: [],
-            favourites: []
-        };
+        try {
+            const savedLists = localStorage.getItem('userLists');
+            return savedLists ? JSON.parse(savedLists) : {
+                watched: [],
+                watching: [],
+                pending: [],
+                favourites: []
+            };
+        } catch (error) {
+            console.error("Failed to parse userLists from (localStorage:", error);
+            // Fallback to default empty lists if parsing fails
+            return {
+                watched: [],
+                watching: [],
+                pending: [],
+                favourites: []
+            };
+        }
     });
 
     useEffect(() => {

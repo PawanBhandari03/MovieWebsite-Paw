@@ -16,7 +16,10 @@ const MovieCard = ({ id, title, image, rating, year, category }: MovieProps) => 
         <Link to={`/movie/${id}`} state={{ title, image, rating, year, category }}>
             <motion.div
                 className="group relative h-[300px] md:h-[350px] rounded-xl overflow-hidden cursor-pointer"
-                whileHover={{ scale: 1.05 }}
+                whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 0 25px rgba(56, 189, 248, 0.4)"
+                }}
                 transition={{ duration: 0.3 }}
             >
                 <img
