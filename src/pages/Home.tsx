@@ -43,6 +43,8 @@ const Home = () => {
                             year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
                             category="Movie"
                             mediaType="movie"
+                            overview={movie.overview}
+                            genreIds={movie.genre_ids}
                         />
                     ))}
                 </Section>
