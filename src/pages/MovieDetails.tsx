@@ -20,6 +20,12 @@ interface Episode {
     still_path: string | null;
 }
 
+const EMBED_DOMAINS = [
+    'vidsrc-embed.su',
+    'vidsrcme.su',
+    'vsrc.su'
+];
+
 const MovieDetails = () => {
     const { id } = useParams();
     const location = useLocation();
@@ -36,6 +42,13 @@ const MovieDetails = () => {
     // Derived state - instant, no useEffect lag
     const isTvShow = location.pathname.includes('/tv/');
     const mediaType = isTvShow ? 'tv' : 'movie';
+
+    const [currentEmbedIndex, setCurrentEmbedIndex] = useState(0);
+
+    // Reset embed source when content changes
+    useEffect(() => {
+        setCurrentEmbedIndex(0);
+    }, [id, mediaType, selectedSeason, selectedEpisode]);
 
     const handleAddToList = (type: ListType) => {
         if (!isLoggedIn) {
@@ -125,9 +138,51 @@ const MovieDetails = () => {
         );
     }
 
+
+
+    const handleEmbedError = () => {
+        if (currentEmbedIndex < EMBED_DOMAINS.length) {
+            setCurrentEmbedIndex(prev => prev + 1);
+        }
+    };
+
+    const currentDomain = EMBED_DOMAINS[currentEmbedIndex];
+    const showPlayer = currentEmbedIndex < EMBED_DOMAINS.length;
+
     const embedUrl = mediaType === 'movie'
-        ? `https://rivestream.org/embed?type=movie&id=${id}`
-        : `https://rivestream.org/embed?type=tv&id=${id}&season=${selectedSeason}&episode=${selectedEpisode}`;
+        ? `https://${currentDomain}/embed/movie/${id}`
+        : `https://${currentDomain}/embed/tv/${id}/${selectedSeason}/${selectedEpisode}`;
+
+    // Helper to render the player content
+    const renderPlayer = () => {
+        if (!showPlayer) {
+            return (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white p-6 text-center z-10">
+                    <p className="text-xl font-semibold mb-2">Video is not available on your network.</p>
+                    <p className="text-gray-400 mb-6">Please try another connection or check back later.</p>
+                    <button
+                        onClick={() => setCurrentEmbedIndex(0)}
+                        className="px-6 py-2 bg-secondary hover:bg-accent text-white rounded-lg transition-colors font-medium border border-gray-700"
+                    >
+                        Retry Servers
+                    </button>
+                </div>
+            );
+        }
+
+        return (
+            <iframe
+                key={`${embedUrl}-${currentEmbedIndex}`} // Force re-render on source change
+                src={embedUrl}
+                className="w-full h-full"
+                allowFullScreen
+                allow="autoplay; encrypted-media; picture-in-picture"
+                referrerPolicy="origin"
+                title="Player"
+                onError={handleEmbedError}
+            />
+        );
+    };
 
     return (
         <div className="min-h-screen bg-primary flex flex-col pt-20">
@@ -144,15 +199,22 @@ const MovieDetails = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="w-full max-w-6xl"
                 >
-                    <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800 mb-8">
-                        <iframe
-                            src={embedUrl}
-                            className="w-full h-full"
-                            allowFullScreen
-                            allow="autoplay; encrypted-media; picture-in-picture"
-                            referrerPolicy="origin"
-                            title="Player"
-                        />
+                    <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800 mb-8 relative group">
+                        {renderPlayer()}
+
+                        {/* Server Switcher Control - Only show if player is active */}
+                        {showPlayer && (
+                            <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <button
+                                    onClick={() => setCurrentEmbedIndex((prev) => (prev + 1) % EMBED_DOMAINS.length)}
+                                    className="flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-secondary text-white rounded-lg backdrop-blur-sm border border-white/10 transition-all text-sm font-medium"
+                                >
+                                    <span>Server {currentEmbedIndex + 1}</span>
+                                    <span className="text-gray-400">|</span>
+                                    <span className="text-accent hover:underline">Switch</span>
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     <div className="text-left">
