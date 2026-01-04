@@ -14,8 +14,30 @@ export interface TMDBMovie {
     first_air_date?: string;
     vote_average: number;
     genre_ids: number[];
+    genres?: { id: number; name: string }[];
+    runtime?: number;
     media_type?: 'movie' | 'tv' | 'person';
     origin_country?: string[];
+    credits?: {
+        cast: {
+            id: number;
+            name: string;
+            profile_path: string | null;
+            character: string;
+        }[];
+    };
+    videos?: {
+        results: {
+            id: string;
+            key: string;
+            name: string;
+            site: string;
+            type: string;
+        }[];
+    };
+    similar?: {
+        results: TMDBMovie[];
+    };
 }
 
 export interface TMDBResponse {
@@ -133,7 +155,11 @@ export const getMovieDetails = async (id: string | number) => {
 };
 
 export const getTVDetails = async (id: number) => {
-    const response = await tmdb.get(`/tv/${id}`);
+    const response = await tmdb.get(`/tv/${id}`, {
+        params: {
+            append_to_response: 'credits,similar,videos',
+        },
+    });
     return response.data;
 };
 
@@ -145,4 +171,48 @@ export const getTVSeasonDetails = async (id: number, seasonNumber: number) => {
 export const getImageUrl = (path: string | null, size: string = 'w500') => {
     if (!path) return 'https://placehold.co/500x750/1e293b/ffffff?text=No+Image';
     return `https://image.tmdb.org/t/p/${size}${path}`;
+};
+// Genre Discovery
+export const getDiscoverMovies = async (genreId: number | string, page = 1): Promise<TMDBResponse> => {
+    const response = await tmdb.get<TMDBResponse>('/discover/movie', {
+        params: {
+            page,
+            with_genres: genreId,
+            sort_by: 'popularity.desc'
+        }
+    });
+    return {
+        ...response.data,
+        results: response.data.results.filter(movie => movie.poster_path)
+    };
+};
+
+export const getDiscoverTV = async (genreId: number | string, page = 1): Promise<TMDBResponse> => {
+    const response = await tmdb.get<TMDBResponse>('/discover/tv', {
+        params: {
+            page,
+            with_genres: genreId,
+            without_genres: 16, // Exclude Animation to separate from Anime section
+            sort_by: 'popularity.desc'
+        }
+    });
+    return {
+        ...response.data,
+        results: response.data.results.filter(show => show.poster_path)
+    };
+};
+
+export const getDiscoverAnime = async (genreId: number | string, page = 1): Promise<TMDBResponse> => {
+    const response = await tmdb.get<TMDBResponse>('/discover/tv', {
+        params: {
+            page,
+            with_genres: `16,${genreId}`, // Animation + Selected Genre
+            with_original_language: 'ja',
+            sort_by: 'popularity.desc'
+        }
+    });
+    return {
+        ...response.data,
+        results: response.data.results.filter(show => show.poster_path)
+    };
 };

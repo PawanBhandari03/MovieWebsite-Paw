@@ -51,6 +51,8 @@ const Anime = () => {
                             year={new Date(anime.first_air_date || anime.release_date || Date.now()).getFullYear()}
                             category="Anime"
                             mediaType="tv"
+                            overview={anime.overview}
+                            genreIds={anime.genre_ids}
                         />
                     ))
                 )}

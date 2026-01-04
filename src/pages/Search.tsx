@@ -55,6 +55,8 @@ const Search = () => {
                             year={new Date(item.release_date || item.first_air_date || Date.now()).getFullYear()}
                             category={getCategory(item)}
                             mediaType={item.media_type as 'movie' | 'tv'}
+                            overview={item.overview}
+                            genreIds={item.genre_ids}
                         />
                     ))
                 ) : (

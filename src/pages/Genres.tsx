@@ -54,7 +54,7 @@ const Genres = () => {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: index * 0.02 }}
-                            onClick={() => navigate(`/search?genre=${genre.id}`)}
+                            onClick={() => navigate(`/genre/${genre.id}?name=${encodeURIComponent(genre.name)}`)}
                             className="px-6 py-2 rounded-full border border-gray-700 bg-secondary/50 text-gray-300 hover:text-accent hover:border-accent transition-all duration-300 backdrop-blur-sm text-sm md:text-base font-medium"
                         >
                             {genre.name}

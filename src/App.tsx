@@ -18,6 +18,8 @@ import WebSeries from './pages/WebSeries';
 import Dramas from './pages/Dramas';
 import LandingPage from './pages/LandingPage';
 
+import GenreResults from './pages/GenreResults';
+
 function App() {
   return (
     <AuthProvider>
@@ -30,6 +32,7 @@ function App() {
               <Route path="/movies" element={<Movies />} />
               <Route path="/anime" element={<Anime />} />
               <Route path="/genres" element={<Genres />} />
+              <Route path="/genre/:id" element={<GenreResults />} />
               <Route path="/web-series" element={<WebSeries />} />
               <Route path="/dramas" element={<Dramas />} />
 

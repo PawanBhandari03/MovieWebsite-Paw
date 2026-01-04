@@ -51,6 +51,8 @@ const WebSeries = () => {
                             year={new Date(show.first_air_date || show.release_date || Date.now()).getFullYear()}
                             category="TV Show"
                             mediaType="tv"
+                            overview={show.overview}
+                            genreIds={show.genre_ids}
                         />
                     ))
                 )}

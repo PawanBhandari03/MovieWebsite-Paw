@@ -1,5 +1,4 @@
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ArrowLeft, Play, Star, Plus, Check, ChevronDown } from 'lucide-react';
 import { useList, type ListType } from '../context/ListContext';
 import { useAuth } from '../context/AuthContext';
@@ -184,88 +183,110 @@ const MovieDetails = () => {
         );
     };
 
+    const trailer = movie.videos?.results.find(
+        (video) => video.site === 'YouTube' && (video.type === 'Trailer' || video.type === 'Teaser')
+    );
+
     return (
-        <div className="min-h-screen bg-primary flex flex-col pt-20">
-            <div className="px-4 md:px-8">
-                <Link to="/home" className="inline-flex items-center gap-2 text-white hover:text-accent transition-colors mb-6">
-                    <ArrowLeft className="w-6 h-6" />
-                    <span>Back to Home</span>
-                </Link>
+        <div className="min-h-screen bg-primary flex flex-col pt-16">
+            {/* Full Width Player Section */}
+            <div className="w-full bg-black aspect-video md:aspect-[21/9] lg:h-[85vh] relative group">
+                <div className="absolute top-4 left-4 z-20">
+                    <Link to="/home" className="inline-flex items-center gap-2 text-white/80 hover:text-white bg-black/50 p-2 rounded-full backdrop-blur-sm transition-colors">
+                        <ArrowLeft className="w-6 h-6" />
+                    </Link>
+                </div>
+
+                {renderPlayer()}
+
+                {/* Server Switcher Control */}
+                {showPlayer && (
+                    <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button
+                            onClick={() => setCurrentEmbedIndex((prev) => (prev + 1) % EMBED_DOMAINS.length)}
+                            className="flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-secondary text-white rounded-lg backdrop-blur-sm border border-white/10 transition-all text-sm font-medium"
+                        >
+                            <span>Server {currentEmbedIndex + 1}</span>
+                            <span className="text-gray-400">|</span>
+                            <span className="text-accent hover:underline">Switch</span>
+                        </button>
+                    </div>
+                )}
             </div>
 
-            <div className="flex-1 flex flex-col items-center px-4 md:px-12 pb-20">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="w-full max-w-6xl"
-                >
-                    <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800 mb-8 relative group">
-                        {renderPlayer()}
+            {/* Content Grid */}
+            <div className="w-full px-4 md:px-8 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
 
-                        {/* Server Switcher Control - Only show if player is active */}
-                        {showPlayer && (
-                            <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <button
-                                    onClick={() => setCurrentEmbedIndex((prev) => (prev + 1) % EMBED_DOMAINS.length)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-secondary text-white rounded-lg backdrop-blur-sm border border-white/10 transition-all text-sm font-medium"
-                                >
-                                    <span>Server {currentEmbedIndex + 1}</span>
-                                    <span className="text-gray-400">|</span>
-                                    <span className="text-accent hover:underline">Switch</span>
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                    {/* Left Column: Details & Description (2/3 width) */}
+                    <div className="lg:col-span-2 space-y-8">
+                        <div>
+                            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{movie.title || movie.name}</h1>
 
-                    <div className="text-left">
-                        <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{movie.title || movie.name}</h1>
-
-                        <div className="flex flex-wrap items-center gap-4 text-gray-300 mb-6">
-                            {(movie.release_date || movie.first_air_date) && (
-                                <span className="px-3 py-1 bg-secondary rounded-full text-sm font-medium border border-gray-700">
-                                    {new Date(movie.release_date || movie.first_air_date || '').getFullYear()}
+                            <div className="flex flex-wrap items-center gap-4 text-gray-300 mb-6">
+                                {(movie.release_date || movie.first_air_date) && (
+                                    <span className="px-3 py-1 bg-secondary rounded-full text-sm font-medium border border-gray-700">
+                                        {new Date(movie.release_date || movie.first_air_date || '').getFullYear()}
+                                    </span>
+                                )}
+                                <span className="flex items-center gap-1 text-yellow-400 font-semibold">
+                                    <Star className="w-4 h-4 fill-current" />
+                                    {movie.vote_average.toFixed(1)}
                                 </span>
-                            )}
-                            <span className="flex items-center gap-1 text-yellow-400">
-                                <Star className="w-4 h-4 fill-current" />
-                                {movie.vote_average.toFixed(1)}
-                            </span>
+                                {movie.runtime && (
+                                    <span className="text-gray-400">{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span>
+                                )}
 
-                            {/* Add to List Dropdown */}
-                            <div className="relative ml-4 group">
-                                <button className="flex items-center gap-2 px-4 py-2 bg-secondary/50 hover:bg-secondary rounded-full transition-all duration-300 border border-gray-700">
-                                    {checkListStatus(Number(id)) ? (
-                                        <>
-                                            <Check className="w-4 h-4 text-green-500" />
-                                            <span className="text-green-500 capitalize">{checkListStatus(Number(id))}</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Plus className="w-4 h-4" />
-                                            <span>Add to List</span>
-                                        </>
-                                    )}
-                                    <ChevronDown className="w-4 h-4" />
-                                </button>
+                                {/* Add to List Dropdown */}
+                                <div className="relative group z-10">
+                                    <button className="flex items-center gap-2 px-4 py-2 bg-secondary/50 hover:bg-secondary rounded-full transition-all duration-300 border border-gray-700">
+                                        {checkListStatus(Number(id)) ? (
+                                            <>
+                                                <Check className="w-4 h-4 text-green-500" />
+                                                <span className="text-green-500 capitalize">{checkListStatus(Number(id))}</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Plus className="w-4 h-4" />
+                                                <span>Add to List</span>
+                                            </>
+                                        )}
+                                        <ChevronDown className="w-4 h-4" />
+                                    </button>
 
-                                <div className="absolute top-full left-0 mt-2 w-48 bg-secondary border border-gray-700 rounded-xl shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                                    {(['watched', 'watching', 'pending', 'favourites'] as const).map((type) => (
-                                        <button
-                                            key={type}
-                                            onClick={() => handleAddToList(type)}
-                                            className={`w-full text-left px-4 py-3 hover:bg-white/10 transition-colors flex items-center justify-between ${checkListStatus(Number(id)) === type ? 'text-accent' : 'text-gray-300'
-                                                }`}
-                                        >
-                                            <span className="capitalize">{type}</span>
-                                            {checkListStatus(Number(id)) === type && <Check className="w-4 h-4" />}
-                                        </button>
-                                    ))}
+                                    <div className="absolute top-full left-0 mt-2 w-48 bg-secondary border border-gray-700 rounded-xl shadow-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                                        {(['watched', 'watching', 'pending', 'favourites'] as const).map((type) => (
+                                            <button
+                                                key={type}
+                                                onClick={() => handleAddToList(type)}
+                                                className={`w-full text-left px-4 py-3 hover:bg-white/10 transition-colors flex items-center justify-between ${checkListStatus(Number(id)) === type ? 'text-accent' : 'text-gray-300'
+                                                    }`}
+                                            >
+                                                <span className="capitalize">{type}</span>
+                                                {checkListStatus(Number(id)) === type && <Check className="w-4 h-4" />}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
+
+                            {/* Genres (if available) */}
+                            {movie.genres && (
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    {movie.genres.map(g => (
+                                        <span key={g.id} className="text-xs text-gray-400 border border-gray-700 px-2 py-1 rounded">{g.name}</span>
+                                    ))}
+                                </div>
+                            )}
+
+
+                            <p className="text-gray-300 text-lg leading-relaxed">
+                                {movie.overview}
+                            </p>
                         </div>
 
                         {mediaType === 'tv' && (
-                            <div className="mb-8 p-6 bg-secondary/30 rounded-xl border border-gray-800">
+                            <div className="p-6 bg-secondary/30 rounded-xl border border-gray-800">
                                 <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
                                     <Play className="w-5 h-5 text-accent" />
                                     Select Episode
@@ -300,13 +321,101 @@ const MovieDetails = () => {
                                 </div>
                             </div>
                         )}
-
-                        <p className="text-gray-400 text-lg leading-relaxed max-w-4xl">
-                            {movie.overview}
-                        </p>
                     </div>
-                </motion.div>
+
+                    {/* Right Column: Sidebar (Trailer, Cast, Recommendations) */}
+                    <div className="space-y-8">
+                        {/* Trailer Section (Sidebar on desktop) */}
+                        {trailer && (
+                            <div className="w-full lg:w-full flex-shrink-0">
+                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                    <Play className="w-5 h-5 text-red-500 fill-current" />
+                                    Trailer
+                                </h3>
+                                <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg border border-gray-800 bg-black">
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${trailer.key}`}
+                                        title="Trailer"
+                                        className="w-full h-full"
+                                        allowFullScreen
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
+
+            {/* Main Cast Section - Center Aligned & Full Width */}
+            {movie.credits && movie.credits.cast.length > 0 && (
+                <div className="w-full px-4 md:px-12 py-12 bg-black/20">
+                    <div className="max-w-7xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold text-white mb-8">Main Cast</h2>
+                        <div className="flex flex-wrap justify-center gap-8">
+                            {movie.credits.cast.slice(0, 10).map((actor) => (
+                                <div key={actor.id} className="flex flex-col items-center group">
+                                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-gray-800 group-hover:border-accent transition-all duration-300 mb-3 shadow-lg">
+                                        <img
+                                            src={actor.profile_path
+                                                ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
+                                                : 'https://placehold.co/200x200/1e293b/ffffff?text=No+Image'}
+                                            alt={actor.name}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                    </div>
+                                    <h3 className="text-white font-medium text-sm md:text-base">{actor.name}</h3>
+                                    <p className="text-gray-400 text-xs md:text-sm">{actor.character}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Recommendations Section - Full Width Edge to Edge */}
+            {movie.similar && movie.similar.results.length > 0 && (
+                <div className="w-full py-12">
+                    <div className="px-4 md:px-12 mb-6">
+                        <h2 className="text-2xl font-bold text-white">You May Also Like</h2>
+                    </div>
+
+                    <div className="w-full overflow-x-auto pb-8 scrollbar-hide">
+                        <div className="flex px-4 md:px-4 gap-4 min-w-max">
+                            {movie.similar.results.map((similarMovie) => (
+                                <Link
+                                    to={`/${similarMovie.media_type || 'movie'}/${similarMovie.id}`}
+                                    key={similarMovie.id}
+                                    className="block group w-[160px] md:w-[240px] flex-shrink-0"
+                                >
+                                    <div className="aspect-[2/3] rounded-xl overflow-hidden relative mb-3 shadow-[0_0_15px_rgba(0,0,0,0.5)] border border-gray-800 group-hover:border-gray-600 transition-all">
+                                        <img
+                                            src={`https://image.tmdb.org/t/p/w400${similarMovie.poster_path}`}
+                                            alt={similarMovie.title || similarMovie.name}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                            loading="lazy"
+                                        />
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                            <div className="w-12 h-12 rounded-full bg-accent/90 flex items-center justify-center shadow-lg transform scale-0 group-hover:scale-100 transition-transform duration-300">
+                                                <Play className="w-6 h-6 text-primary fill-current ml-1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3 className="text-white font-medium truncate group-hover:text-accent transition-colors">
+                                        {similarMovie.title || similarMovie.name}
+                                    </h3>
+                                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                                        <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                                        <span>{similarMovie.vote_average.toFixed(1)}</span>
+                                        <span>•</span>
+                                        <span>{new Date(similarMovie.release_date || similarMovie.first_air_date || Date.now()).getFullYear()}</span>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
