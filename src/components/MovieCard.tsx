@@ -2,15 +2,7 @@
 import { Star, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-interface MovieProps {
-    id: string | number;
-    title: string;
-    image: string;
-    rating: number;
-    year: number;
-    category: string;
-    mediaType?: 'movie' | 'tv';
-}
+
 
 const GENRES: { [key: number]: string } = {
     28: 'Action', 12: 'Adventure', 16: 'Animation', 35: 'Comedy', 80: 'Crime',

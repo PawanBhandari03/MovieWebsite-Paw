@@ -183,9 +183,20 @@ const MovieDetails = () => {
         );
     };
 
-    const trailer = movie.videos?.results.find(
-        (video) => video.site === 'YouTube' && (video.type === 'Trailer' || video.type === 'Teaser')
-    );
+    const trailer = movie.videos?.results
+        .filter(video => video.site === 'YouTube')
+        .sort((a, b) => {
+            const typePriority: { [key: string]: number } = {
+                'Trailer': 1,
+                'Teaser': 2,
+                'Clip': 3,
+                'Opening Credits': 4,
+                'Featurette': 5
+            };
+            const priorityA = typePriority[a.type] || 99;
+            const priorityB = typePriority[b.type] || 99;
+            return priorityA - priorityB;
+        })[0];
 
     return (
         <div className="min-h-screen bg-primary flex flex-col pt-16">

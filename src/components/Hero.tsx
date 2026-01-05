@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { getTrendingMovies, getImageUrl, type TMDBMovie } from '../services/tmdb';
@@ -124,10 +124,7 @@ const Hero = () => {
                             <Play className="w-5 h-5 fill-current" />
                             Watch Now
                         </button>
-                        <button className="flex items-center gap-2 px-8 py-3 bg-white/10 backdrop-blur-md text-white font-bold rounded-full hover:bg-white/20 transition-all border border-white/20">
-                            <Info className="w-5 h-5" />
-                            More Info
-                        </button>
+                        {/* More Info button removed as requested */}
                     </motion.div>
                 </div>
             </div>

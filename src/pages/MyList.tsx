@@ -10,7 +10,7 @@ const MyList = () => {
     const { isLoggedIn } = useAuth();
     const { lists, removeFromList } = useList();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<ListType>('watching');
+    const [activeTab, setActiveTab] = useState<ListType>('watched');
 
     const tabs: { id: ListType; label: string }[] = [
         { id: 'watched', label: 'Watched' },

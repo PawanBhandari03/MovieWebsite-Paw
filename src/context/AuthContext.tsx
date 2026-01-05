@@ -6,8 +6,11 @@ import {
     signOut,
     onAuthStateChanged,
     updateProfile,
-    sendEmailVerification
+    sendEmailVerification,
+    signInWithPopup,
+    sendPasswordResetEmail
 } from 'firebase/auth';
+import { googleProvider } from '../lib/firebase';
 
 export interface User {
     name: string;
@@ -27,6 +30,8 @@ interface AuthContextType {
     updateUser: (data: Partial<User>) => Promise<void>;
     resendVerificationEmail: () => Promise<void>;
     deleteAccount: () => Promise<void>;
+    googleSignIn: () => Promise<void>;
+    resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -66,6 +71,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             alert("Please verify your email first");
             throw new Error("Please verify your email first");
         }
+    };
+
+    const googleSignIn = async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+        } catch (error) {
+            console.error("Google verify error", error);
+            throw error;
+        }
+    };
+
+    const resetPassword = async (email: string) => {
+        await sendPasswordResetEmail(auth, email);
     };
 
     const logout = async () => {
@@ -121,7 +139,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, loading, login, logout, register, updateUser, resendVerificationEmail, deleteAccount }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, loading, login, logout, register, updateUser, resendVerificationEmail, deleteAccount, googleSignIn, resetPassword }}>
             {loading ? (
                 <div className="flex items-center justify-center min-h-screen bg-black text-white">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
