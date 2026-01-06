@@ -20,10 +20,15 @@ const Layout = ({ children }: LayoutProps) => {
             {!isLandingPage && (
                 <footer className="bg-secondary py-8 px-4 md:px-12 mt-20 border-t border-gray-800">
                     <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-                        <p>&copy; 2024 Cinema App. All rights reserved.</p>
-                        <div className="flex space-x-6 mt-4 md:mt-0">
-                            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                        <div className="md:max-w-2xl text-center md:text-left mb-4 md:mb-0">
+                            <p className="leading-relaxed">
+                                Pawflix does not store any files on it's server. It only links to the media
+                                which is hosted on 3rd party services like YouTube, Dailymotion, Ok.ru,
+                                Vidsrc, Cineby, Streamtape and more.
+                            </p>
+                        </div>
+                        <div className="text-center md:text-right">
+                            <p>&copy; 2026 Pawflix. All rights not reserved.</p>
                         </div>
                     </div>
                 </footer>
