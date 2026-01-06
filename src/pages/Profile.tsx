@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Settings, LogOut, ChevronDown, ChevronUp, Save, Bell, Play } from 'lucide-react';
+import { User, Settings, LogOut, ChevronDown, ChevronUp, Save, Bell } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +16,6 @@ const Profile = () => {
 
     // Settings State
     const [notifications, setNotifications] = useState(true);
-    const [autoplay, setAutoplay] = useState(true);
 
     const handleLogout = () => {
         logout();
@@ -161,18 +160,7 @@ const Profile = () => {
                                                     <div className={`absolute top-1 w-3 h-3 rounded-full bg-white transition-all ${notifications ? 'left-6' : 'left-1'}`} />
                                                 </button>
                                             </div>
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-3">
-                                                    <Play className="w-4 h-4 text-gray-400" />
-                                                    <span className="text-gray-300">Autoplay Trailers</span>
-                                                </div>
-                                                <button
-                                                    onClick={() => setAutoplay(!autoplay)}
-                                                    className={`w-10 h-5 rounded-full relative transition-colors ${autoplay ? 'bg-accent' : 'bg-gray-700'}`}
-                                                >
-                                                    <div className={`absolute top-1 w-3 h-3 rounded-full bg-white transition-all ${autoplay ? 'left-6' : 'left-1'}`} />
-                                                </button>
-                                            </div>
+
                                         </div>
                                     </motion.div>
                                 )}
