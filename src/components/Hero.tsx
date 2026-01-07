@@ -56,7 +56,7 @@ const Hero = () => {
     const currentMovie = movies[currentIndex];
 
     return (
-        <div className="relative h-[85vh] w-full overflow-hidden group">
+        <div className="relative h-[65vh] md:h-[85vh] w-full overflow-hidden group">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentIndex}
@@ -81,7 +81,7 @@ const Hero = () => {
 
             {/* Content */}
             <div className="relative z-10 h-full flex items-center px-4 md:px-12 max-w-7xl mx-auto">
-                <div className="max-w-2xl space-y-6 pt-20">
+                <div className="max-w-2xl space-y-4 md:space-y-6 pt-16 md:pt-20">
                     <motion.div
                         key={`content-${currentIndex}`}
                         initial={{ opacity: 0, y: 30 }}
@@ -92,11 +92,11 @@ const Hero = () => {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className="text-accent font-semibold tracking-wider uppercase text-sm"
+                            className="text-accent font-semibold tracking-wider uppercase text-xs md:text-sm"
                         >
                             #{currentIndex + 1} Trending
                         </motion.span>
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight drop-shadow-2xl">
+                        <h1 className="text-3xl md:text-6xl font-bold text-white mt-2 leading-tight drop-shadow-2xl">
                             {currentMovie.title || currentMovie.name}
                         </h1>
                     </motion.div>
@@ -106,7 +106,7 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                        className="text-gray-300 text-lg md:text-xl line-clamp-3 drop-shadow-lg max-w-xl"
+                        className="text-gray-300 text-sm md:text-xl line-clamp-3 drop-shadow-lg max-w-xl"
                     >
                         {currentMovie.overview}
                     </motion.p>
@@ -119,12 +119,11 @@ const Hero = () => {
                     >
                         <button
                             onClick={() => navigate(`/movie/${currentMovie.id}`)}
-                            className="flex items-center gap-2 px-8 py-3 bg-accent text-primary font-bold rounded-full hover:bg-accent/90 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(56,189,248,0.5)]"
+                            className="flex items-center gap-2 px-6 py-2 md:px-8 md:py-3 bg-accent text-primary font-bold rounded-full hover:bg-accent/90 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(56,189,248,0.5)] text-sm md:text-base"
                         >
-                            <Play className="w-5 h-5 fill-current" />
+                            <Play className="w-4 h-4 md:w-5 md:h-5 fill-current" />
                             Watch Now
                         </button>
-                        {/* More Info button removed as requested */}
                     </motion.div>
                 </div>
             </div>
@@ -132,26 +131,26 @@ const Hero = () => {
             {/* Navigation Buttons */}
             <button
                 onClick={handlePrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
+                className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
                 aria-label="Previous Slide"
             >
                 <ChevronLeft className="w-8 h-8" />
             </button>
             <button
                 onClick={handleNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
+                className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
                 aria-label="Next Slide"
             >
                 <ChevronRight className="w-8 h-8" />
             </button>
 
             {/* Indicators */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                 {movies.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'bg-accent w-6' : 'bg-gray-500 hover:bg-gray-400'
+                        className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all ${index === currentIndex ? 'bg-accent w-4 md:w-6' : 'bg-gray-500 hover:bg-gray-400'
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />

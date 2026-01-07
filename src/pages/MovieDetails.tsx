@@ -232,7 +232,7 @@ const MovieDetails = () => {
                     {/* Left Column: Details & Description (2/3 width) */}
                     <div className="lg:col-span-2 space-y-8">
                         <div>
-                            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{movie.title || movie.name}</h1>
+                            <h1 className="text-3xl md:text-6xl font-bold text-white mb-4">{movie.title || movie.name}</h1>
 
                             <div className="flex flex-wrap items-center gap-4 text-gray-300 mb-6">
                                 {(movie.release_date || movie.first_air_date) && (
@@ -250,7 +250,7 @@ const MovieDetails = () => {
 
                                 {/* Add to List Dropdown */}
                                 <div className="relative group z-10">
-                                    <button className="flex items-center gap-2 px-4 py-2 bg-secondary/50 hover:bg-secondary rounded-full transition-all duration-300 border border-gray-700">
+                                    <button className="flex items-center gap-2 px-4 py-2 bg-secondary/50 hover:bg-secondary rounded-full transition-all duration-300 border border-gray-700 text-sm md:text-base">
                                         {checkListStatus(Number(id)) ? (
                                             <>
                                                 <Check className="w-4 h-4 text-green-500" />
@@ -291,7 +291,7 @@ const MovieDetails = () => {
                             )}
 
 
-                            <p className="text-gray-300 text-lg leading-relaxed">
+                            <p className="text-gray-300 text-base md:text-lg leading-relaxed">
                                 {movie.overview}
                             </p>
                         </div>

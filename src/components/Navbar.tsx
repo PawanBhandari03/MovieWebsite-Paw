@@ -118,10 +118,10 @@ const Navbar = () => {
                     {/* Search Bar */}
                     <div className="flex items-center relative">
                         <AnimatePresence>
-                            {isSearchOpen && (
+                            {(isSearchOpen || (window.innerWidth < 768 && isSearchOpen)) && (
                                 <motion.div
                                     initial={{ width: 0, opacity: 0 }}
-                                    animate={{ width: 300, opacity: 1 }}
+                                    animate={{ width: window.innerWidth < 768 ? '200px' : '300px', opacity: 1 }}
                                     exit={{ width: 0, opacity: 0 }}
                                     className="mr-2 relative"
                                 >
@@ -129,10 +129,10 @@ const Navbar = () => {
                                         <input
                                             ref={searchInputRef}
                                             type="text"
-                                            placeholder="Titles, people, genres"
+                                            placeholder="Search..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full bg-secondary/50 border border-gray-600 rounded-full px-4 py-1 text-sm text-white focus:outline-none focus:border-accent"
+                                            className="w-full bg-secondary/90 border border-gray-600 rounded-full px-4 py-1 text-sm text-white focus:outline-none focus:border-accent"
                                         />
                                     </form>
 
@@ -143,7 +143,7 @@ const Navbar = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: 10 }}
                                             transition={{ duration: 0.2 }}
-                                            className="absolute top-full left-0 w-full bg-secondary/95 backdrop-blur-xl border border-gray-800 rounded-xl mt-2 overflow-hidden shadow-2xl z-50"
+                                            className="absolute top-full left-0 w-full bg-secondary/95 backdrop-blur-xl border border-gray-800 rounded-xl mt-2 overflow-hidden shadow-2xl z-50 max-h-[60vh] overflow-y-auto"
                                         >
                                             {recommendations.map((movie, index) => (
                                                 <motion.div
@@ -186,34 +186,104 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Mobile Menu Button */}
-                <button
-                    className="md:hidden text-white"
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                    {isMobileMenuOpen ? <X /> : <Menu />}
-                </button>
+                {/* Mobile Icons & Menu Button */}
+                <div className="flex md:hidden items-center space-x-4">
+                    {/* Mobile Search */}
+                    <div className="flex items-center relative">
+                        <AnimatePresence>
+                            {isSearchOpen && (
+                                <motion.div
+                                    initial={{ width: 0, opacity: 0 }}
+                                    animate={{ width: '160px', opacity: 1 }}
+                                    exit={{ width: 0, opacity: 0 }}
+                                    className="mr-2 absolute right-8 top-1/2 -translate-y-1/2"
+                                >
+                                    <form onSubmit={handleSearchSubmit}>
+                                        <input
+                                            ref={searchInputRef}
+                                            type="text"
+                                            placeholder="Search..."
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            className="w-full bg-secondary/95 border border-gray-600 rounded-full px-3 py-1 text-xs text-white focus:outline-none focus:border-accent shadow-xl"
+                                        />
+                                    </form>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                        <Search
+                            className="w-5 h-5 text-gray-300"
+                            onClick={() => setIsSearchOpen(!isSearchOpen)}
+                        />
+                    </div>
+
+                    <button
+                        className="text-white"
+                        onClick={() => setIsMobileMenuOpen(true)}
+                    >
+                        <Menu className="w-6 h-6" />
+                    </button>
+                </div>
             </div>
 
-            {/* Mobile Menu */}
+
+
+            {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="absolute top-full left-0 w-full bg-secondary/95 backdrop-blur-xl p-6 md:hidden flex flex-col space-y-4 border-b border-gray-800"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm md:hidden"
+                        onClick={() => setIsMobileMenuOpen(false)}
                     >
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                to={link.path}
-                                className="text-gray-300 hover:text-white text-lg font-medium"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="absolute right-0 top-0 h-full w-[80%] max-w-sm bg-secondary border-l border-gray-800 shadow-2xl p-6 flex flex-col"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="flex justify-between items-center mb-8">
+                                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500">
+                                    Menu
+                                </span>
+                                <button
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                                >
+                                    <X className="w-6 h-6 text-gray-400" />
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col space-y-6">
+                                {navLinks.filter(link => link.name !== 'My List').map((link) => (
+                                    <Link
+                                        key={link.name}
+                                        to={link.path}
+                                        className="text-gray-300 hover:text-white text-xl font-medium transition-colors flex items-center justify-between group"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        {link.name}
+                                        <span className="opacity-0 group-hover:opacity-100 text-accent transition-opacity">→</span>
+                                    </Link>
+                                ))}
+                            </div>
+
+                            <div className="mt-8 pt-8 border-t border-gray-800">
+                                <p className="text-sm text-gray-500 font-semibold mb-4 uppercase tracking-wider">Your Lists</p>
+                                <div className="flex flex-col space-y-4">
+                                    <Link to="/mylist" className="text-gray-400 hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                                        Watch List
+                                    </Link>
+                                    <Link to={isLoggedIn ? "/profile" : "/auth"} className="text-gray-400 hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                                        {isLoggedIn ? "Profile" : "Sign In"}
+                                    </Link>
+                                </div>
+                            </div>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
