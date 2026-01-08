@@ -189,30 +189,32 @@ const Navbar = () => {
                 {/* Mobile Icons & Menu Button */}
                 <div className="flex md:hidden items-center space-x-4">
                     {/* Mobile Search */}
-                    <div className="flex items-center relative">
+                    {/* Mobile Search */}
+                    <div className="flex items-center">
                         <AnimatePresence>
                             {isSearchOpen && (
                                 <motion.div
-                                    initial={{ width: 0, opacity: 0 }}
-                                    animate={{ width: '160px', opacity: 1 }}
-                                    exit={{ width: 0, opacity: 0 }}
-                                    className="mr-2 absolute right-8 top-1/2 -translate-y-1/2"
+                                    initial={{ opacity: 0, scaleX: 0 }}
+                                    animate={{ opacity: 1, scaleX: 1 }}
+                                    exit={{ opacity: 0, scaleX: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="absolute left-2 right-16 top-1/2 -translate-y-1/2 z-50 origin-right"
                                 >
                                     <form onSubmit={handleSearchSubmit}>
                                         <input
                                             ref={searchInputRef}
                                             type="text"
-                                            placeholder="Search..."
+                                            placeholder="Search movies, shows..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full bg-secondary/95 border border-gray-600 rounded-full px-3 py-1 text-xs text-white focus:outline-none focus:border-accent shadow-xl"
+                                            className="w-full bg-black/90 border border-gray-600 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-accent shadow-2xl backdrop-blur-md"
                                         />
                                     </form>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                         <Search
-                            className="w-5 h-5 text-gray-300"
+                            className="w-6 h-6 text-gray-300 active:scale-95 transition-transform"
                             onClick={() => setIsSearchOpen(!isSearchOpen)}
                         />
                     </div>

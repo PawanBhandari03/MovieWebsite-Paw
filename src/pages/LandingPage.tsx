@@ -113,32 +113,32 @@ const LandingPage = () => {
                 <div className="container mx-auto px-4">
                     <motion.h2 {...fadeIn} className="text-4xl font-bold text-center mb-16">Why Choose Pawflix?</motion.h2>
 
-                    <div className="overflow-x-auto max-w-5xl mx-auto bg-secondary/40 rounded-3xl p-8 border border-white/5">
-                        <table className="w-full text-left border-collapse">
+                    <div className="overflow-x-auto max-w-5xl mx-auto bg-secondary/40 rounded-3xl p-4 md:p-8 border border-white/5">
+                        <table className="w-full text-left border-collapse min-w-[600px] md:min-w-0">
                             <thead>
                                 <tr className="border-b border-white/10">
-                                    <th className="p-4 text-xl font-semibold">Platform</th>
-                                    <th className="p-4 text-xl font-semibold">Key Features</th>
-                                    <th className="p-4 text-xl font-semibold">User Rating</th>
+                                    <th className="p-2 md:p-4 text-sm md:text-xl font-semibold">Platform</th>
+                                    <th className="p-2 md:p-4 text-sm md:text-xl font-semibold">Key Features</th>
+                                    <th className="p-2 md:p-4 text-sm md:text-xl font-semibold">User Rating</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
                                 <tr className="bg-accent/5">
-                                    <td className="p-6 font-bold text-accent flex items-center gap-2">
-                                        <Star className="fill-accent" size={20} /> Pawflix
+                                    <td className="p-3 md:p-6 font-bold text-accent flex items-center gap-2 text-sm md:text-base">
+                                        <Star className="fill-accent" size={18} /> Pawflix
                                     </td>
-                                    <td className="p-6 text-gray-300">Modern UI, Free Access, Huge Library</td>
-                                    <td className="p-6 font-bold text-green-400">9/10</td>
+                                    <td className="p-3 md:p-6 text-gray-300 text-sm md:text-base">Modern UI, Free Access, Huge Library</td>
+                                    <td className="p-3 md:p-6 font-bold text-green-400 text-sm md:text-base">9/10</td>
                                 </tr>
                                 <tr>
-                                    <td className="p-6 font-semibold text-gray-400">Generic Stream</td>
-                                    <td className="p-6 text-gray-500">Ad-heavy, Slow buffering</td>
-                                    <td className="p-6 text-gray-500">6/10</td>
+                                    <td className="p-3 md:p-6 font-semibold text-gray-400 text-sm md:text-base">Generic Stream</td>
+                                    <td className="p-3 md:p-6 text-gray-500 text-sm md:text-base">Ad-heavy, Slow buffering</td>
+                                    <td className="p-3 md:p-6 text-gray-500 text-sm md:text-base">6/10</td>
                                 </tr>
                                 <tr>
-                                    <td className="p-6 font-semibold text-gray-400">Movies2Watch</td>
-                                    <td className="p-6 text-gray-500">Good library, Cluttered UI</td>
-                                    <td className="p-6 text-gray-500">8/10</td>
+                                    <td className="p-3 md:p-6 font-semibold text-gray-400 text-sm md:text-base">Movies2Watch</td>
+                                    <td className="p-3 md:p-6 text-gray-500 text-sm md:text-base">Good library, Cluttered UI</td>
+                                    <td className="p-3 md:p-6 text-gray-500 text-sm md:text-base">8/10</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -182,7 +182,10 @@ const LandingPage = () => {
                         <a href="#" className="hover:text-accent transition-colors">TV Shows</a>
                         <a href="#" className="hover:text-accent transition-colors">Contact</a>
                     </div>
-                    <p className="text-gray-600">© 2026 Pawflix. All rights reserved.</p>
+                    <p className="text-gray-600 mb-2 max-w-3xl mx-auto text-sm">
+                        Pawflix does not store any files on it's server. It only links to the media which is hosted on 3rd party services like YouTube, Dailymotion, Ok.ru, Vidsrc, Cineby, Streamtape and more.
+                    </p>
+                    <p className="text-gray-600">© 2026 Pawflix. All rights not reserved.</p>
                 </div>
             </footer>
         </div>

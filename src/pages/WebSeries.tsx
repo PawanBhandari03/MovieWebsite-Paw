@@ -36,7 +36,7 @@ const WebSeries = () => {
     };
 
     return (
-        <div className="pt-24 pb-20 min-h-screen bg-primary">
+        <div className="pt-20 md:pt-24 pb-20 min-h-screen bg-primary">
             <Section title="Popular Web Series">
                 {isLoading ? (
                     <div className="text-white text-center w-full py-20">Loading...</div>

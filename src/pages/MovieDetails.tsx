@@ -49,6 +49,11 @@ const MovieDetails = () => {
         setCurrentEmbedIndex(0);
     }, [id, mediaType, selectedSeason, selectedEpisode]);
 
+    // Scroll to top on navigation
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
+
     const handleAddToList = (type: ListType) => {
         if (!isLoggedIn) {
             navigate('/auth');
