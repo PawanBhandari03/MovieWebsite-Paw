@@ -194,11 +194,11 @@ const Navbar = () => {
                         <AnimatePresence>
                             {isSearchOpen && (
                                 <motion.div
-                                    initial={{ opacity: 0, scaleX: 0 }}
-                                    animate={{ opacity: 1, scaleX: 1 }}
-                                    exit={{ opacity: 0, scaleX: 0 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="absolute left-2 right-16 top-1/2 -translate-y-1/2 z-50 origin-right"
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute inset-x-0 top-full mt-2 left-0 right-0 px-4 bg-primary/95 backdrop-blur-md py-4 border-b border-white/10 shadow-2xl md:hidden"
                                 >
                                     <form onSubmit={handleSearchSubmit}>
                                         <input
@@ -207,9 +207,33 @@ const Navbar = () => {
                                             placeholder="Search movies, shows..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full bg-black/90 border border-gray-600 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-accent shadow-2xl backdrop-blur-md"
+                                            className="w-full bg-secondary border border-gray-600 rounded-xl px-4 py-3 text-base text-white focus:outline-none focus:border-accent shadow-inner"
+                                            autoFocus
                                         />
                                     </form>
+
+                                    {/* Recommendations Dropdown Mobile */}
+                                    {showRecommendations && recommendations.length > 0 && (
+                                        <div className="mt-4 flex flex-col gap-2 max-h-[60vh] overflow-y-auto">
+                                            {recommendations.map((movie) => (
+                                                <div
+                                                    key={movie.id}
+                                                    onClick={() => handleRecommendationClick(movie.id)}
+                                                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer"
+                                                >
+                                                    <img
+                                                        src={getImageUrl(movie.poster_path, 'w92')}
+                                                        alt={movie.title}
+                                                        className="w-10 h-14 object-cover rounded-md flex-shrink-0"
+                                                    />
+                                                    <div className="flex-1 min-w-0">
+                                                        <h4 className="text-sm font-medium text-white truncate">{movie.title}</h4>
+                                                        <p className="text-xs text-gray-400">{movie.release_date?.split('-')[0] || 'N/A'}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </motion.div>
                             )}
                         </AnimatePresence>
