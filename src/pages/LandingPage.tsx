@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Tv, Globe, Users, Star, ArrowRight, Shield, Zap, Heart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Tv, Globe, Users, Star, ArrowRight, Shield, Zap, Heart, Mail, X } from 'lucide-react';
+import { useState } from 'react';
 
 const LandingPage = () => {
+    const [isContactOpen, setIsContactOpen] = useState(false);
     const fadeIn = {
         initial: { opacity: 0, y: 20 },
         whileInView: { opacity: 1, y: 0 },
@@ -108,6 +110,72 @@ const LandingPage = () => {
                 </div>
             </section>
 
+            {/* Contact Modal */}
+            <AnimatePresence>
+                {isContactOpen && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsContactOpen(false)}
+                            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative bg-secondary p-8 rounded-2xl border border-white/10 shadow-2xl max-w-md w-full z-10 overflow-hidden"
+                        >
+                            <div className="absolute top-0 right-0 p-4">
+                                <button
+                                    onClick={() => setIsContactOpen(false)}
+                                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white"
+                                >
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            <div className="text-center">
+                                <div className="bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center text-accent mx-auto mb-6">
+                                    <Mail size={32} />
+                                </div>
+
+                                <h2 className="text-3xl font-bold text-white mb-2">Contact Us</h2>
+                                <p className="text-gray-400 mb-8">
+                                    Have feedback or found a bug? I'd love to hear from you.
+                                </p>
+
+                                <p className="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-2">Email Us At</p>
+                                <a
+                                    href="mailto:contact.pawandev@gmail.com?subject=Feedback about the website"
+                                    className="text-xl md:text-2xl font-bold text-white hover:text-accent transition-colors block mb-8 break-all"
+                                >
+                                    contact.pawandev@gmail.com
+                                </a>
+
+                                <a
+                                    href="mailto:contact.pawandev@gmail.com?subject=Feedback about the website"
+                                    className="block w-full"
+                                >
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="w-full py-3 bg-accent text-primary font-bold rounded-xl hover:bg-white transition-colors shadow-lg shadow-accent/20"
+                                    >
+                                        Contact via Email
+                                    </motion.button>
+                                </a>
+
+                                <p className="text-gray-500 text-xs mt-6">
+                                    I usually respond within 24–48 hours.
+                                </p>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
             {/* Comparison Table */}
             <section className="py-24 bg-secondary/20">
                 <div className="container mx-auto px-4">
@@ -172,6 +240,9 @@ const LandingPage = () => {
                 </div>
             </section>
 
+            {/* Contact Section */}
+
+
             {/* Footer */}
             <footer className="bg-secondary py-12 border-t border-white/5">
                 <div className="container mx-auto px-4 text-center">
@@ -180,7 +251,7 @@ const LandingPage = () => {
                         <a href="#" className="hover:text-accent transition-colors">Home</a>
                         <a href="#" className="hover:text-accent transition-colors">Movies</a>
                         <a href="#" className="hover:text-accent transition-colors">TV Shows</a>
-                        <a href="#" className="hover:text-accent transition-colors">Contact</a>
+                        <button onClick={() => setIsContactOpen(true)} className="hover:text-accent transition-colors">Contact</button>
                     </div>
                     <p className="text-gray-600 mb-2 max-w-3xl mx-auto text-sm">
                         Pawflix does not store any files on it's server. It only links to the media which is hosted on 3rd party services like YouTube, Dailymotion, Ok.ru, Vidsrc, Cineby, Streamtape and more.
