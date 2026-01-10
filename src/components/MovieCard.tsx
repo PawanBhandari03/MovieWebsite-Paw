@@ -29,12 +29,12 @@ const MovieCard = ({ id, title, image, rating, year, category, mediaType, overvi
 
     return (
         <Link to={linkPath} state={{ title, image, rating, year, category, mediaType }}>
-            <div className="group relative aspect-[2/3] w-full rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/50 z-10 hover:z-20 border border-transparent hover:border-gray-700">
+            <div className="group/card relative aspect-[2/3] w-full rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/50 z-10 hover:z-20 border border-transparent hover:border-gray-700">
                 {/* Main Image */}
                 <img
                     src={image}
                     alt={title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
                     loading="lazy"
                     onError={(e) => {
                         e.currentTarget.src = 'https://placehold.co/500x750/1e293b/ffffff?text=No+Image';
@@ -42,36 +42,36 @@ const MovieCard = ({ id, title, image, rating, year, category, mediaType, overvi
                 />
 
                 {/* Default Gradient Overlay - Always visible at bottom for Title */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover/card:opacity-90 transition-opacity duration-300" />
 
                 {/* Unhovered Content (Title, Rating, Year) */}
-                <div className="absolute bottom-0 left-0 w-full p-3 md:p-4 transition-transform duration-300 transform group-hover:-translate-y-2">
-                    <div className="flex items-center gap-2 text-[10px] md:text-xs text-accent font-medium mb-1 opacity-100 group-hover:opacity-0 transition-opacity duration-200 absolute -top-4">
+                <div className="absolute bottom-0 left-0 w-full p-3 md:p-4 transition-transform duration-300 transform group-hover/card:-translate-y-2">
+                    <div className="flex items-center gap-2 text-[10px] md:text-xs text-accent font-medium mb-1 opacity-100 group-hover/card:opacity-0 transition-opacity duration-200 absolute -top-4">
                         <span>{year}</span>
                     </div>
 
-                    <h3 className="text-white font-bold text-sm md:text-lg leading-tight mb-1 relative z-10 group-hover:text-accent transition-colors line-clamp-2">
+                    <h3 className="text-white font-bold text-sm md:text-lg leading-tight mb-1 relative z-10 group-hover/card:text-accent transition-colors line-clamp-2">
                         {title}
                     </h3>
 
-                    <div className="flex items-center gap-2 text-yellow-400 text-xs md:text-sm group-hover:hidden">
+                    <div className="flex items-center gap-2 text-yellow-400 text-xs md:text-sm group-hover/card:hidden">
                         <Star className="w-3 h-3 md:w-4 md:h-4 fill-current" />
                         <span>{rating > 0 ? rating.toFixed(1) : 'N/A'}</span>
                     </div>
                 </div>
 
                 {/* Hover Overlay Content - Appears/Slides up on hover */}
-                <div className="hidden md:flex absolute inset-0 flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 backdrop-blur-[2px]">
+                <div className="hidden md:flex absolute inset-0 flex-col justify-end p-4 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 bg-black/60 backdrop-blur-[2px]">
 
                     {/* Play Button - Centered */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform scale-50 group-hover:scale-100 transition-transform duration-300 delay-75">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform scale-50 group-hover/card:scale-100 transition-transform duration-300 delay-75">
                         <div className="w-12 h-12 rounded-full bg-accent/90 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.5)]">
                             <Play className="w-5 h-5 text-primary fill-current ml-1" />
                         </div>
                     </div>
 
                     {/* Detailed Info (Moves up slightly) */}
-                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300">
                         {/* Header Row */}
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2 text-green-400 font-bold text-xs">

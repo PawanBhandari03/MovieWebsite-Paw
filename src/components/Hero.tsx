@@ -88,14 +88,7 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                     >
-                        <motion.span
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="text-accent font-semibold tracking-wider uppercase text-xs md:text-sm"
-                        >
-                            #{currentIndex + 1} Trending
-                        </motion.span>
+
                         <h1 className="text-3xl md:text-6xl font-bold text-white mt-2 leading-tight drop-shadow-2xl">
                             {currentMovie.title || currentMovie.name}
                         </h1>

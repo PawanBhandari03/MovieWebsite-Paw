@@ -1,87 +1,58 @@
 import { useEffect, useState } from 'react';
 import Hero from '../components/Hero';
-import Section from '../components/Section';
-import MovieCard from '../components/MovieCard';
-import { getTrendingMovies, getTrendingMoviesToday, getPopularMovies, getImageUrl, type TMDBMovie } from '../services/tmdb';
+import MovieSlider from '../components/MovieSlider';
+import {
+    getTrendingMovies,
+    getAnime,
+    getWebSeries,
+    getDramas,
+    type TMDBMovie
+} from '../services/tmdb';
 
 const Home = () => {
-    const [trendingToday, setTrendingToday] = useState<TMDBMovie[]>([]);
-    const [trendingWeek, setTrendingWeek] = useState<TMDBMovie[]>([]);
-    const [trendingMonth, setTrendingMonth] = useState<TMDBMovie[]>([]);
+    const [trendingMovies, setTrendingMovies] = useState<TMDBMovie[]>([]);
+    const [trendingAnime, setTrendingAnime] = useState<TMDBMovie[]>([]);
+    const [trendingSeries, setTrendingSeries] = useState<TMDBMovie[]>([]);
+    const [trendingDrama, setTrendingDrama] = useState<TMDBMovie[]>([]);
 
     useEffect(() => {
-        const fetchMovies = async () => {
+        const fetchAllData = async () => {
             try {
-                const [today, week, month] = await Promise.all([
-                    getTrendingMoviesToday(),
+                // Fetch all categories in parallel
+                const [movies, anime, series, drama] = await Promise.all([
                     getTrendingMovies(),
-                    getPopularMovies() // Using popular as proxy for monthly trending
+                    getAnime(),
+                    getWebSeries(),
+                    getDramas()
                 ]);
-                setTrendingToday(today);
-                setTrendingWeek(week);
-                setTrendingMonth(month?.results || []);
+
+                // Update state
+                setTrendingMovies(movies);
+                setTrendingAnime(anime.results || []);
+                setTrendingSeries(series.results || []);
+                setTrendingDrama(drama.results || []);
+
             } catch (error) {
-                console.error("Failed to fetch movies:", error);
+                console.error("Failed to fetch home page content:", error);
             }
         };
-        fetchMovies();
+
+        fetchAllData();
     }, []);
 
     return (
         <div className="pb-20">
             <Hero />
 
-            <div className="-mt-10 relative z-20 space-y-12">
-                <Section title="Trending Today">
-                    {trendingToday.slice(0, 12).map((movie) => (
-                        <MovieCard
-                            key={movie.id}
-                            id={movie.id}
-                            title={movie.title || movie.name || 'Unknown'}
-                            image={getImageUrl(movie.poster_path)}
-                            rating={movie.vote_average}
-                            year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
-                            category="Movie"
-                            mediaType="movie"
-                            overview={movie.overview}
-                            genreIds={movie.genre_ids}
-                        />
-                    ))}
-                </Section>
+            {/* Movies Content */}
+            <div className="relative z-10 -mt-10 md:-mt-20 pb-20 space-y-12 md:space-y-24 pl-4 md:pl-12">
+                <div className="pt-10 md:pt-20"> {/* Added spacing spacer */}
+                    {trendingMovies.length > 0 && <MovieSlider title="Trending Movies" movies={trendingMovies} />}
+                </div>
 
-                <Section title="Trending This Week">
-                    {trendingWeek.slice(0, 12).map((movie) => (
-                        <MovieCard
-                            key={movie.id}
-                            id={movie.id}
-                            title={movie.title || movie.name || 'Unknown'}
-                            image={getImageUrl(movie.poster_path)}
-                            rating={movie.vote_average}
-                            year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
-                            category="Movie"
-                            mediaType="movie"
-                            overview={movie.overview}
-                            genreIds={movie.genre_ids}
-                        />
-                    ))}
-                </Section>
-
-                <Section title="Trending This Month">
-                    {trendingMonth.slice(0, 12).map((movie) => (
-                        <MovieCard
-                            key={movie.id}
-                            id={movie.id}
-                            title={movie.title || movie.name || 'Unknown'}
-                            image={getImageUrl(movie.poster_path)}
-                            rating={movie.vote_average}
-                            year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
-                            category="Movie"
-                            mediaType="movie"
-                            overview={movie.overview}
-                            genreIds={movie.genre_ids}
-                        />
-                    ))}
-                </Section>
+                {trendingAnime.length > 0 && <MovieSlider title="Trending Anime" movies={trendingAnime} />}
+                <MovieSlider title="Trending Web Series" movies={trendingSeries} />
+                <MovieSlider title="Trending Drama" movies={trendingDrama} />
             </div>
         </div>
     );
