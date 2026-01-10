@@ -41,11 +41,11 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="pb-20">
+        <div className="pb-8">
             <Hero />
 
             {/* Movies Content */}
-            <div className="relative z-10 -mt-10 md:-mt-20 pb-20 space-y-12 md:space-y-24 pl-4 md:pl-12">
+            <div className="relative z-10 -mt-10 md:-mt-20 pb-8 space-y-12 md:space-y-24 pl-4 md:pl-12">
                 <div className="pt-10 md:pt-20"> {/* Added spacing spacer */}
                     {trendingMovies.length > 0 && <MovieSlider title="Trending Movies" movies={trendingMovies} />}
                 </div>

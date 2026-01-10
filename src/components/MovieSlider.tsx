@@ -43,10 +43,6 @@ const MovieSlider = ({ title, movies }: MovieSliderProps) => {
         <div className="py-4 md:py-8 relative group/slider">
             {/* Attractive Header */}
             <div className="mb-6 md:mb-10 relative px-4 md:px-0">
-                {/* Background large text effect */}
-                <h2 className="absolute -top-6 -left-2 text-6xl md:text-8xl font-black text-white/5 opacity-50 select-none pointer-events-none uppercase tracking-tighter truncate max-w-full overflow-hidden">
-                    {title}
-                </h2>
                 <div className="relative flex items-center gap-4">
                     <div className="h-8 w-1.5 bg-accent rounded-full animate-pulse" />
                     <h2 className="text-2xl md:text-4xl font-bold text-white tracking-wide uppercase drop-shadow-md">
