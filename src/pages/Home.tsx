@@ -45,8 +45,8 @@ const Home = () => {
             <Hero />
 
             {/* Movies Content */}
-            <div className="relative z-10 -mt-10 md:-mt-20 pb-8 space-y-12 md:space-y-24 pl-4 md:pl-12">
-                <div className="pt-10 md:pt-20"> {/* Added spacing spacer */}
+            <div className="relative z-10 pb-4 space-y-4 md:space-y-8 pl-4 md:pl-12">
+                <div className="pt-4 md:pt-8"> {/* Added spacing spacer */}
                     {trendingMovies.length > 0 && <MovieSlider title="Trending Movies" movies={trendingMovies} />}
                 </div>
 

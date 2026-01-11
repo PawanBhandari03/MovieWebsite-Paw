@@ -10,10 +10,11 @@ import { useLocation } from 'react-router-dom';
 const Layout = ({ children }: LayoutProps) => {
     const location = useLocation();
     const isLandingPage = location.pathname === '/';
+    const isPlayerPage = location.pathname.startsWith('/movie/') || location.pathname.startsWith('/tv/');
 
     return (
         <div className="min-h-screen bg-primary text-white overflow-x-hidden">
-            {!isLandingPage && <Navbar />}
+            {!isLandingPage && !isPlayerPage && <Navbar />}
             <main>
                 {children}
             </main>
