@@ -56,7 +56,7 @@ const Hero = () => {
     const currentMovie = movies[currentIndex];
 
     return (
-        <div className="relative h-[65vh] md:h-[85vh] w-full overflow-hidden group">
+        <div className="relative h-screen w-full overflow-hidden group">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentIndex}
@@ -80,8 +80,8 @@ const Hero = () => {
             </AnimatePresence>
 
             {/* Content */}
-            <div className="relative z-10 h-full flex items-center px-4 md:px-12 max-w-7xl mx-auto">
-                <div className="max-w-2xl space-y-4 md:space-y-6 pt-16 md:pt-20">
+            <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-end justify-between px-4 md:px-12 max-w-[1920px] mx-auto pb-20 md:pb-40">
+                <div className="max-w-3xl space-y-4 md:space-y-6 pt-16 md:pt-20">
                     <motion.div
                         key={`content-${currentIndex}`}
                         initial={{ opacity: 0, y: 30 }}
@@ -89,7 +89,7 @@ const Hero = () => {
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                     >
 
-                        <h1 className="text-3xl md:text-6xl font-bold text-white mt-2 leading-tight drop-shadow-2xl">
+                        <h1 className="text-3xl md:text-7xl font-bold text-white mt-2 leading-tight drop-shadow-2xl">
                             {currentMovie.title || currentMovie.name}
                         </h1>
                     </motion.div>
@@ -99,26 +99,30 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                        className="text-gray-300 text-sm md:text-xl line-clamp-3 drop-shadow-lg max-w-xl"
+                        className="text-gray-300 text-sm md:text-xl line-clamp-3 drop-shadow-lg max-w-2xl"
                     >
                         {currentMovie.overview}
                     </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                        className="flex flex-wrap gap-4"
-                    >
-                        <button
-                            onClick={() => navigate(`/movie/${currentMovie.id}`)}
-                            className="flex items-center gap-2 px-6 py-2 md:px-8 md:py-3 bg-accent text-primary font-bold rounded-full hover:bg-accent/90 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(56,189,248,0.5)] text-sm md:text-base"
-                        >
-                            <Play className="w-4 h-4 md:w-5 md:h-5 fill-current" />
-                            Watch Now
-                        </button>
-                    </motion.div>
                 </div>
+
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    className="flex flex-wrap gap-4 mt-8 md:mt-0 md:pl-8 md:pr-24"
+                >
+                    <button
+                        onClick={() => navigate(`/movie/${currentMovie.id}`)}
+                        className="flex items-center gap-4 group cursor-pointer"
+                    >
+                        <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-accent flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(56,189,248,0.5)]">
+                            <Play className="w-8 h-8 md:w-10 md:h-10 text-accent fill-accent ml-1" />
+                        </div>
+                        <span className="text-2xl md:text-3xl font-bold tracking-widest text-white drop-shadow-lg group-hover:text-accent transition-colors">
+                            WATCH NOW!
+                        </span>
+                    </button>
+                </motion.div>
             </div>
 
             {/* Navigation Buttons */}

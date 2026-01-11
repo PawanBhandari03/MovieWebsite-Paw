@@ -29,7 +29,7 @@ const MovieCard = ({ id, title, image, rating, year, category, mediaType, overvi
 
     return (
         <Link to={linkPath} state={{ title, image, rating, year, category, mediaType }}>
-            <div className="group/card relative aspect-[2/3] w-full rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/50 z-10 hover:z-20 border border-transparent hover:border-gray-700">
+            <div className="group/card relative aspect-[2/3.4] w-full rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/50 z-10 hover:z-20 border border-transparent hover:border-gray-700">
                 {/* Main Image */}
                 <img
                     src={image}

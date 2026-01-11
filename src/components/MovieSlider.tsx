@@ -72,7 +72,7 @@ const MovieSlider = ({ title, movies }: MovieSliderProps) => {
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {movies.map((movie) => (
-                        <div key={movie.id} className="w-[140px] md:w-[180px] flex-shrink-0 transition-transform duration-300 hover:z-20 hover:scale-105">
+                        <div key={movie.id} className="w-[150px] md:w-[220px] flex-shrink-0 transition-transform duration-300 hover:z-20 hover:scale-105">
                             <MovieCard
                                 id={movie.id}
                                 title={movie.title || movie.name || 'Unknown'}

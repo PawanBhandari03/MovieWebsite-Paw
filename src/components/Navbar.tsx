@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, User, Menu, X, PawPrint } from 'lucide-react';
+import { Search, User, Menu, X, PawPrint, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import { useAuth } from '../context/AuthContext';
@@ -81,21 +81,19 @@ const Navbar = () => {
         { name: 'Web Series', path: '/web-series' },
         { name: 'Dramas', path: '/dramas' },
         { name: 'Genres', path: '/genres' },
-
-        { name: 'My List', path: '/mylist' },
     ];
 
     return (
         <nav
             className={cn(
-                "fixed top-0 w-full z-50 transition-all duration-300 ease-in-out px-4 md:px-12 py-4",
+                "fixed top-0 w-full z-50 transition-all duration-300 ease-in-out px-4 md:px-12 py-6",
                 isScrolled ? "bg-primary/80 backdrop-blur-md shadow-lg" : "bg-transparent"
             )}
         >
-            <div className="flex items-center justify-between max-w-7xl mx-auto">
+            <div className="flex items-center justify-between max-w-[1920px] mx-auto">
                 {/* Logo */}
-                <Link to="/home" className="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500">
-                    <PawPrint className="w-8 h-8 text-accent" />
+                <Link to="/home" className="flex items-center gap-3 text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500">
+                    <PawPrint className="w-10 h-10 md:w-12 md:h-12 text-accent" />
                     <span>Pawflix</span>
                 </Link>
 
@@ -105,7 +103,7 @@ const Navbar = () => {
                         <Link
                             key={link.name}
                             to={link.path}
-                            className="text-gray-300 hover:text-white transition-colors text-sm font-medium relative group"
+                            className="text-gray-300 hover:text-white transition-colors text-lg font-medium relative group"
                         >
                             {link.name}
                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
@@ -177,6 +175,13 @@ const Navbar = () => {
                     </div>
 
 
+
+
+                    {/* My List */}
+                    <Link to="/mylist" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group">
+                        <Bookmark className="w-6 h-6 group-hover:fill-accent group-hover:text-accent transition-colors" />
+                        <span className="text-lg font-medium hidden lg:block">My List</span>
+                    </Link>
 
                     {/* Profile */}
                     <Link to={isLoggedIn ? "/profile" : "/auth"}>
