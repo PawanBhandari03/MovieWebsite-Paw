@@ -94,7 +94,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <Link to="/home" className="flex items-center gap-3 text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500">
                     <PawPrint className="w-10 h-10 md:w-12 md:h-12 text-accent" />
-                    <span>Pawflix</span>
+                    <span>PawFlix</span>
                 </Link>
 
                 {/* Desktop Navigation */}

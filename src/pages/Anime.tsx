@@ -15,7 +15,8 @@ const Anime = () => {
             setIsLoading(true);
             try {
                 const data = await getAnime(currentPage);
-                setAnimeList(data.results);
+                // Slice to 18 items to ensure full rows on 6-column grid (18 is divisible by 2, 3, 6)
+                setAnimeList(data.results.slice(0, 18));
                 setTotalPages(Math.min(data.total_pages, 500));
             } catch (error) {
                 console.error("Failed to fetch anime:", error);
@@ -37,7 +38,7 @@ const Anime = () => {
 
     return (
         <div className="pt-20 md:pt-24 pb-20 min-h-screen bg-primary">
-            <Section title="Anime Series">
+            <Section title="Popular Anime">
                 {isLoading ? (
                     <div className="text-white text-center w-full py-20">Loading...</div>
                 ) : (

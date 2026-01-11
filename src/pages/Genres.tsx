@@ -39,10 +39,9 @@ const Genres = () => {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-16 space-y-4">
                     <h1 className="text-3xl md:text-5xl font-bold text-white">
-                        Watch Movies and TV Series by category on Paw.
                     </h1>
                     <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-                        Watch variety of genres like Thriller, Rom-com, Mystery, Action, kdrama and more on Paw.
+                        Watch variety of genres like Thriller, Rom-com, Mystery, Action, kdrama and more on PawFlix.
                         Browse categories and find the next great story that will capture your imagination.
                     </p>
                 </div>

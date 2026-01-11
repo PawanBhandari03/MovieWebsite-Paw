@@ -38,7 +38,7 @@ const LandingPage = () => {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                     >
                         <h1 className="text-6xl md:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-accent to-purple-500 mb-6 drop-shadow-2xl tracking-tight">
-                            Pawflix
+                            PawFlix
                         </h1>
                         <p className="text-xl md:text-3xl text-gray-300 mb-10 max-w-3xl mx-auto font-light">
                             Watch Movies and TV Shows Free Official Website
@@ -56,19 +56,19 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* What is Pawflix? */}
+            {/* What is PawFlix? */}
             <section className="py-24 bg-secondary/30 relative">
                 <div className="container mx-auto px-4">
                     <motion.div
                         {...fadeIn}
                         className="max-w-4xl mx-auto text-center"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white">What is Pawflix?</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white">What is PawFlix?</h2>
                         <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                            Pawflix is a premium streaming platform designed to bring the cinema experience directly to your screen. We believe entertainment should be accessible to everyone, which is why we offer a vast library of movies, TV shows, anime, and web series completely free of charge.
+                            PawFlix is a premium streaming platform designed to bring the cinema experience directly to your screen. We believe entertainment should be accessible to everyone, which is why we offer a vast library of movies, TV shows, anime, and web series completely free of charge.
                         </p>
                         <p className="text-lg text-gray-300 leading-relaxed">
-                            Whether you're into the latest blockbusters, timeless classics, or trending international dramas, Pawflix has something for you. Our platform is built with modern web technologies to ensure a smooth, high-quality viewing experience on any device's browser, without the need for downloads or subscriptions.
+                            Whether you're into the latest blockbusters, timeless classics, or trending international dramas, PawFlix has something for you. Our platform is built with modern web technologies to ensure a smooth, high-quality viewing experience on any device's browser, without the need for downloads or subscriptions.
                         </p>
                     </motion.div>
                 </div>
@@ -179,7 +179,7 @@ const LandingPage = () => {
             {/* Comparison Table */}
             <section className="py-24 bg-secondary/20">
                 <div className="container mx-auto px-4">
-                    <motion.h2 {...fadeIn} className="text-4xl font-bold text-center mb-16">Why Choose Pawflix?</motion.h2>
+                    <motion.h2 {...fadeIn} className="text-4xl font-bold text-center mb-16">Why Choose PawFlix?</motion.h2>
 
                     <div className="overflow-x-auto max-w-5xl mx-auto bg-secondary/40 rounded-3xl p-4 md:p-8 border border-white/5">
                         <table className="w-full text-left border-collapse min-w-[600px] md:min-w-0">
@@ -193,7 +193,7 @@ const LandingPage = () => {
                             <tbody className="divide-y divide-white/5">
                                 <tr className="bg-accent/5">
                                     <td className="p-3 md:p-6 font-bold text-accent flex items-center gap-2 text-sm md:text-base">
-                                        <Star className="fill-accent" size={18} /> Pawflix
+                                        <Star className="fill-accent" size={18} /> PawFlix
                                     </td>
                                     <td className="p-3 md:p-6 text-gray-300 text-sm md:text-base">Modern UI, Free Access, Huge Library</td>
                                     <td className="p-3 md:p-6 font-bold text-green-400 text-sm md:text-base">9/10</td>
@@ -220,9 +220,9 @@ const LandingPage = () => {
                     <motion.h2 {...fadeIn} className="text-4xl font-bold text-center mb-16">Frequently Asked Questions</motion.h2>
                     <div className="space-y-4">
                         {[
-                            { q: "What is Pawflix?", a: "Pawflix is a free streaming platform where you can watch movies, TV shows, and anime online." },
-                            { q: "Is it completely free?", a: "Yes, you can watch all content on Pawflix for free without any hidden subscription fees." },
-                            { q: "Do I need to download an app?", a: "No, Pawflix is fully optimized for web browsers. You can stream directly on your phone, tablet, or PC." },
+                            { q: "What is PawFlix?", a: "PawFlix is a free streaming platform where you can watch movies, TV shows, and anime online." },
+                            { q: "Is it completely free?", a: "Yes, you can watch all content on PawFlix for free without any hidden subscription fees." },
+                            { q: "Do I need to download an app?", a: "No, PawFlix is fully optimized for web browsers. You can stream directly on your phone, tablet, or PC." },
                             { q: "Can I save movies to a list?", a: "Yes! Create an account to add movies and shows to your personal 'My List' for easy access." }
                         ].map((faq, i) => (
                             <motion.div
@@ -246,7 +246,7 @@ const LandingPage = () => {
             {/* Footer */}
             <footer className="bg-secondary py-12 border-t border-white/5">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-2xl font-bold text-white mb-6">Pawflix</h2>
+                    <h2 className="text-2xl font-bold text-white mb-6">PawFlix</h2>
                     <div className="flex justify-center gap-8 mb-8 text-gray-400">
                         <a href="#" className="hover:text-accent transition-colors">Home</a>
                         <a href="#" className="hover:text-accent transition-colors">Movies</a>
@@ -254,9 +254,9 @@ const LandingPage = () => {
                         <button onClick={() => setIsContactOpen(true)} className="hover:text-accent transition-colors">Contact</button>
                     </div>
                     <p className="text-gray-600 mb-2 max-w-3xl mx-auto text-sm">
-                        Pawflix does not store any files on it's server. It only links to the media which is hosted on 3rd party services like YouTube, Dailymotion, Ok.ru, Vidsrc, Cineby, Streamtape and more.
+                        PawFlix does not store any files on it's server. It only links to the media which is hosted on 3rd party services like YouTube, Dailymotion, Ok.ru, Vidsrc, Cineby, Streamtape and more.
                     </p>
-                    <p className="text-gray-600">© 2026 Pawflix. All rights not reserved.</p>
+                    <p className="text-gray-600">© 2026 PawFlix. All rights not reserved.</p>
                 </div>
             </footer>
         </div>

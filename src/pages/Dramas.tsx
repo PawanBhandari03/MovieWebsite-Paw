@@ -15,7 +15,8 @@ const Dramas = () => {
             setIsLoading(true);
             try {
                 const data = await getDramas(currentPage);
-                setDramas(data.results);
+                // Slice to 18 items to ensure full rows on 6-column grid
+                setDramas(data.results.slice(0, 18));
                 setTotalPages(Math.min(data.total_pages, 500));
             } catch (error) {
                 console.error("Failed to fetch dramas:", error);
@@ -37,7 +38,7 @@ const Dramas = () => {
 
     return (
         <div className="pt-20 md:pt-24 pb-20 min-h-screen bg-primary">
-            <Section title="Popular Dramas (Kdrama)">
+            <Section title="Popular Dramas">
                 {isLoading ? (
                     <div className="text-white text-center w-full py-20">Loading...</div>
                 ) : (

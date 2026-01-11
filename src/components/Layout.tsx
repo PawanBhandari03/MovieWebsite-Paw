@@ -23,14 +23,12 @@ const Layout = ({ children }: LayoutProps) => {
                     <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
                         <div className="md:max-w-2xl text-center md:text-left mb-4 md:mb-0">
                             <p className="leading-relaxed">
-                                Pawflix does not store any files on it's server. It only links to the media
+                                PawFlix does not store any files on it's server. It only links to the media
                                 which is hosted on 3rd party services like YouTube, Dailymotion, Ok.ru,
                                 Vidsrc, Cineby, Streamtape and more.
                             </p>
                         </div>
-                        <div className="text-center md:text-right">
-                            <p>&copy; 2026 Pawflix. All rights not reserved.</p>
-                        </div>
+                        <p>&copy; 2026 PawFlix. All rights not reserved.</p>
                     </div>
                 </footer>
             )}

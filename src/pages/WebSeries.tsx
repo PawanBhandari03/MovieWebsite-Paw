@@ -15,7 +15,8 @@ const WebSeries = () => {
             setIsLoading(true);
             try {
                 const data = await getWebSeries(currentPage);
-                setShows(data.results);
+                // Slice to 18 items to ensure full rows on 6-column grid
+                setShows(data.results.slice(0, 18));
                 setTotalPages(Math.min(data.total_pages, 500));
             } catch (error) {
                 console.error("Failed to fetch web series:", error);

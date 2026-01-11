@@ -393,7 +393,7 @@ const MovieDetails = () => {
             {movie.similar && movie.similar.results.length > 0 && (
                 <div className="w-full py-12">
                     <div className="px-4 md:px-12 mb-6">
-                        <h2 className="text-2xl font-bold text-white">You May Also Like</h2>
+                        <h2 className="text-2xl font-bold text-white">Recommendation</h2>
                     </div>
 
                     <div className="w-full overflow-x-auto pb-8 scrollbar-hide">

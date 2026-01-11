@@ -15,7 +15,8 @@ const Movies = () => {
             setIsLoading(true);
             try {
                 const data = await getPopularMovies(currentPage);
-                setMovies(data.results);
+                // Slice to 18 items to unsure full rows on 6-column grid
+                setMovies(data.results.slice(0, 18));
                 setTotalPages(Math.min(data.total_pages, 500)); // TMDB limit
             } catch (error) {
                 console.error("Failed to fetch movies:", error);

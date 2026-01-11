@@ -45,7 +45,7 @@ const MovieSlider = ({ title, movies }: MovieSliderProps) => {
             <div className="mb-3 md:mb-5 relative px-4 md:px-0">
                 <div className="relative flex items-center gap-4">
                     <div className="h-8 w-1.5 bg-accent rounded-full animate-pulse" />
-                    <h2 className="text-2xl md:text-4xl font-bold text-white tracking-wide uppercase drop-shadow-md">
+                    <h2 className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500 tracking-wide uppercase">
                         {title}
                     </h2>
                     <div className="h-[1px] flex-grow bg-gradient-to-r from-accent/50 to-transparent ml-4" />
