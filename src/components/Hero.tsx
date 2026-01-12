@@ -80,8 +80,8 @@ const Hero = () => {
             </AnimatePresence>
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-end justify-between px-4 md:px-12 max-w-[1920px] mx-auto pb-20 md:pb-40">
-                <div className="max-w-3xl space-y-4 md:space-y-6 pt-16 md:pt-20">
+            <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-end justify-center md:justify-between px-4 md:px-12 max-w-[1920px] mx-auto pb-20 md:pb-40 gap-8 md:gap-0">
+                <div className="max-w-3xl space-y-4 md:space-y-6 pt-0 md:pt-20 text-center md:text-left flex flex-col items-center md:items-start">
                     <motion.div
                         key={`content-${currentIndex}`}
                         initial={{ opacity: 0, y: 30 }}
@@ -110,7 +110,7 @@ const Hero = () => {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.5 }}
-                    className="flex flex-wrap gap-4 mt-8 md:mt-0 md:pl-8 md:pr-24"
+                    className="flex flex-wrap gap-4 mt-0 md:mt-0 md:pl-8 md:pr-24 justify-center md:justify-start"
                 >
                     <button
                         onClick={() => navigate(`/movie/${currentMovie.id}`)}

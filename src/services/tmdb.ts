@@ -18,6 +18,7 @@ export interface TMDBMovie {
     runtime?: number;
     media_type?: 'movie' | 'tv' | 'person';
     origin_country?: string[];
+    original_language?: string;
     credits?: {
         cast: {
             id: number;
@@ -108,10 +109,20 @@ export const searchMulti = async (query: string, page = 1): Promise<TMDBResponse
 
 // Web Series (TV Shows)
 export const getWebSeries = async (page = 1): Promise<TMDBResponse> => {
-    const response = await tmdb.get<TMDBResponse>('/tv/popular', { params: { page } });
+    const response = await tmdb.get<TMDBResponse>('/discover/tv', {
+        params: {
+            page,
+            without_genres: 16, // Exclude Animation
+            sort_by: 'popularity.desc'
+        }
+    });
     return {
         ...response.data,
-        results: response.data.results.filter(show => show.poster_path)
+        results: response.data.results.filter(show =>
+            show.poster_path &&
+            show.original_language !== 'ja' && // Exclude Anime
+            show.original_language !== 'ko'    // Exclude Kdrama
+        )
     };
 };
 

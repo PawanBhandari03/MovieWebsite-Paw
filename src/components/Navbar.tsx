@@ -199,41 +199,55 @@ const Navbar = () => {
                         <AnimatePresence>
                             {isSearchOpen && (
                                 <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute inset-x-0 top-full mt-2 left-0 right-0 px-4 bg-primary/95 backdrop-blur-md py-4 border-b border-white/10 shadow-2xl md:hidden"
+                                    className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex flex-col pt-4 px-4 md:hidden"
                                 >
-                                    <form onSubmit={handleSearchSubmit}>
-                                        <input
-                                            ref={searchInputRef}
-                                            type="text"
-                                            placeholder="Search movies, shows..."
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full bg-secondary border border-gray-600 rounded-xl px-4 py-3 text-base text-white focus:outline-none focus:border-accent shadow-inner"
-                                            autoFocus
-                                        />
-                                    </form>
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="relative flex-1">
+                                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                            <form onSubmit={handleSearchSubmit} className="w-full">
+                                                <input
+                                                    ref={searchInputRef}
+                                                    type="text"
+                                                    placeholder="Search movies, shows..."
+                                                    value={searchQuery}
+                                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                                    className="w-full bg-secondary/80 border border-gray-600 rounded-2xl pl-12 pr-4 py-4 text-lg text-white focus:outline-none focus:border-accent shadow-2xl"
+                                                    autoFocus
+                                                />
+                                            </form>
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                setIsSearchOpen(false);
+                                                setSearchQuery('');
+                                            }}
+                                            className="text-white p-2"
+                                        >
+                                            <X className="w-6 h-6" />
+                                        </button>
+                                    </div>
 
                                     {/* Recommendations Dropdown Mobile */}
                                     {showRecommendations && recommendations.length > 0 && (
-                                        <div className="mt-4 flex flex-col gap-2 max-h-[60vh] overflow-y-auto">
+                                        <div className="flex flex-col gap-2 overflow-y-auto">
                                             {recommendations.map((movie) => (
                                                 <div
                                                     key={movie.id}
                                                     onClick={() => handleRecommendationClick(movie.id)}
-                                                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer"
+                                                    className="flex items-center gap-4 p-3 rounded-xl bg-secondary/50 border border-white/5 mx-1"
                                                 >
                                                     <img
                                                         src={getImageUrl(movie.poster_path, 'w92')}
                                                         alt={movie.title}
-                                                        className="w-10 h-14 object-cover rounded-md flex-shrink-0"
+                                                        className="w-12 h-16 object-cover rounded-lg shadow-md"
                                                     />
                                                     <div className="flex-1 min-w-0">
-                                                        <h4 className="text-sm font-medium text-white truncate">{movie.title}</h4>
-                                                        <p className="text-xs text-gray-400">{movie.release_date?.split('-')[0] || 'N/A'}</p>
+                                                        <h4 className="text-base font-semibold text-white truncate">{movie.title}</h4>
+                                                        <p className="text-sm text-gray-400">{movie.release_date?.split('-')[0] || 'N/A'}</p>
                                                     </div>
                                                 </div>
                                             ))}
@@ -244,7 +258,7 @@ const Navbar = () => {
                         </AnimatePresence>
                         <Search
                             className="w-6 h-6 text-gray-300 active:scale-95 transition-transform"
-                            onClick={() => setIsSearchOpen(!isSearchOpen)}
+                            onClick={() => setIsSearchOpen(true)}
                         />
                     </div>
 
