@@ -129,14 +129,14 @@ const Hero = () => {
             {/* Navigation Buttons */}
             <button
                 onClick={handlePrev}
-                className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
+                className="block absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100 duration-300"
                 aria-label="Previous Slide"
             >
                 <ChevronLeft className="w-8 h-8" />
             </button>
             <button
                 onClick={handleNext}
-                className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
+                className="block absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100 duration-300"
                 aria-label="Next Slide"
             >
                 <ChevronRight className="w-8 h-8" />
