@@ -43,6 +43,11 @@ const Hero = () => {
         setCurrentIndex((prev) => (prev - 1 + movies.length) % movies.length);
     };
 
+    const swipeConfidenceThreshold = 10000;
+    const swipePower = (offset: number, velocity: number) => {
+        return Math.abs(offset) * velocity;
+    };
+
     if (loading) {
         return (
             <div className="h-[85vh] w-full flex items-center justify-center bg-black">
@@ -65,6 +70,18 @@ const Hero = () => {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.7 }}
                     className="absolute inset-0"
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={1}
+                    onDragEnd={(e, { offset, velocity }) => {
+                        const swipe = swipePower(offset.x, velocity.x);
+
+                        if (swipe < -swipeConfidenceThreshold) {
+                            handleNext();
+                        } else if (swipe > swipeConfidenceThreshold) {
+                            handlePrev();
+                        }
+                    }}
                 >
                     {/* Background Image */}
                     <div
@@ -80,7 +97,7 @@ const Hero = () => {
             </AnimatePresence>
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-end justify-center md:justify-between px-4 md:px-12 max-w-[1920px] mx-auto pb-20 md:pb-40 gap-8 md:gap-0">
+            <div className="relative z-10 h-full flex flex-col md:flex-row items-center md:items-end justify-end md:justify-between px-4 md:px-12 max-w-[1920px] mx-auto pb-24 md:pb-40 gap-8 md:gap-0">
                 <div className="max-w-3xl space-y-4 md:space-y-6 pt-0 md:pt-20 text-center md:text-left flex flex-col items-center md:items-start">
                     <motion.div
                         key={`content-${currentIndex}`}
@@ -129,14 +146,14 @@ const Hero = () => {
             {/* Navigation Buttons */}
             <button
                 onClick={handlePrev}
-                className="block absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100 duration-300"
+                className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
                 aria-label="Previous Slide"
             >
                 <ChevronLeft className="w-8 h-8" />
             </button>
             <button
                 onClick={handleNext}
-                className="block absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100 duration-300"
+                className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-accent hover:text-primary transition-all border border-white/10 hover:border-accent z-20 opacity-0 group-hover:opacity-100 duration-300"
                 aria-label="Next Slide"
             >
                 <ChevronRight className="w-8 h-8" />
