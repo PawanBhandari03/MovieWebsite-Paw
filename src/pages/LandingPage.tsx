@@ -25,7 +25,7 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen bg-primary text-white overflow-x-hidden font-sans">
             {/* Hero Section */}
-            <section className="relative h-[65vh] md:h-screen flex items-center justify-center overflow-hidden">
+            <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-transparent z-10" />
                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2940&auto=format&fit=crop')] bg-cover bg-center opacity-30 animate-pulse-slow" />

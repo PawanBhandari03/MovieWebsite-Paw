@@ -56,7 +56,7 @@ const Hero = () => {
     const currentMovie = movies[currentIndex];
 
     return (
-        <div className="relative h-screen w-full overflow-hidden group">
+        <div className="relative h-[60vh] md:h-screen w-full overflow-hidden group">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentIndex}
