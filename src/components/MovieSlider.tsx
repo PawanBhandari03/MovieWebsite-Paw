@@ -78,7 +78,7 @@ const MovieSlider = ({ title, movies }: MovieSliderProps) => {
                                 title={movie.title || movie.name || 'Unknown'}
                                 image={getImageUrl(movie.poster_path)}
                                 rating={movie.vote_average}
-                                year={new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()}
+                                year={new Date(movie.release_date || movie.first_air_date || new Date().toISOString()).getFullYear()}
                                 category={movie.media_type === 'tv' ? 'TV Show' : 'Movie'}
                                 mediaType={movie.media_type === 'tv' ? 'tv' : 'movie'}
                                 overview={movie.overview}
