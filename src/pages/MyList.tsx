@@ -8,15 +8,16 @@ import { Star, X } from 'lucide-react';
 
 const MyList = () => {
     const { isLoggedIn } = useAuth();
-    const { lists, removeFromList } = useList();
+    const { lists, removeFromList, recentlyViewed } = useList();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<ListType>('watched');
+    const [activeTab, setActiveTab] = useState<ListType | 'history'>('pending');
 
-    const tabs: { id: ListType; label: string }[] = [
+    const tabs: { id: ListType | 'history'; label: string }[] = [
+        { id: 'pending', label: 'Watchlist' },
+        { id: 'watching', label: 'Currently Watching' },
         { id: 'watched', label: 'Watched' },
-        { id: 'watching', label: 'Watching' },
-        { id: 'pending', label: 'Pending' },
-        { id: 'favourites', label: 'Favourites' },
+        { id: 'favourites', label: 'Favorites' },
+        { id: 'history', label: 'Last Seen' },
     ];
 
     if (!isLoggedIn) {
@@ -36,7 +37,7 @@ const MyList = () => {
         );
     }
 
-    const currentList = lists[activeTab] || [];
+    const currentList = activeTab === 'history' ? recentlyViewed : (lists[activeTab] || []);
 
     return (
         <div className="pt-24 pb-20 min-h-screen bg-primary">
@@ -99,16 +100,18 @@ const MyList = () => {
                                                 </div>
                                                 <h3 className="text-white font-medium truncate group-hover:text-accent transition-colors">{item.title}</h3>
                                             </Link>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    removeFromList(item.id, activeTab);
-                                                }}
-                                                className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm"
-                                                title="Remove from list"
-                                            >
-                                                <X className="w-4 h-4" />
-                                            </button>
+                                            {activeTab !== 'history' && (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        removeFromList(item.id, activeTab);
+                                                    }}
+                                                    className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm"
+                                                    title="Remove from list"
+                                                >
+                                                    <X className="w-4 h-4" />
+                                                </button>
+                                            )}
                                         </div>
                                     ))}
                                 </div>

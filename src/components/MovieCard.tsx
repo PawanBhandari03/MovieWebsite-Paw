@@ -140,11 +140,18 @@ const MovieCard = ({ id, title, image, rating, year, category, mediaType, overvi
                                     <div className="absolute bottom-full right-0 mb-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-xl overflow-hidden z-30 animate-in fade-in zoom-in duration-200">
                                         <div className="py-1">
                                             <button
-                                                onClick={(e) => handleListAction(e, 'favourites')}
-                                                className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/10 ${currentStatus === 'favourites' ? 'text-red-500' : 'text-gray-300'}`}
+                                                onClick={(e) => handleListAction(e, 'pending')}
+                                                className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/10 ${currentStatus === 'pending' ? 'text-yellow-500' : 'text-gray-300'}`}
                                             >
-                                                <Heart className={`w-3 h-3 ${currentStatus === 'favourites' ? 'fill-current' : ''}`} />
-                                                Favorites
+                                                <Clock className="w-3 h-3" />
+                                                Watchlist
+                                            </button>
+                                            <button
+                                                onClick={(e) => handleListAction(e, 'watching')}
+                                                className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/10 ${currentStatus === 'watching' ? 'text-blue-500' : 'text-gray-300'}`}
+                                            >
+                                                <Play className="w-3 h-3" />
+                                                Watching
                                             </button>
                                             <button
                                                 onClick={(e) => handleListAction(e, 'watched')}
@@ -154,11 +161,11 @@ const MovieCard = ({ id, title, image, rating, year, category, mediaType, overvi
                                                 Watched
                                             </button>
                                             <button
-                                                onClick={(e) => handleListAction(e, 'pending')}
-                                                className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/10 ${currentStatus === 'pending' ? 'text-yellow-500' : 'text-gray-300'}`}
+                                                onClick={(e) => handleListAction(e, 'favourites')}
+                                                className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/10 ${currentStatus === 'favourites' ? 'text-red-500' : 'text-gray-300'}`}
                                             >
-                                                <Clock className="w-3 h-3" />
-                                                Pending
+                                                <Heart className={`w-3 h-3 ${currentStatus === 'favourites' ? 'fill-current' : ''}`} />
+                                                Favorites
                                             </button>
                                         </div>
                                     </div>

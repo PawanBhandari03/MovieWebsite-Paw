@@ -12,9 +12,11 @@ export interface ListItem {
 
 interface ListContextType {
     lists: Record<ListType, ListItem[]>;
+    recentlyViewed: ListItem[];
     addToList: (item: ListItem, listType: ListType) => void;
     removeFromList: (id: number, listType: ListType) => void;
     checkListStatus: (id: number) => ListType | null;
+    addToHistory: (item: ListItem) => void;
 }
 
 const ListContext = createContext<ListContextType | undefined>(undefined);
@@ -41,9 +43,22 @@ export const ListProvider = ({ children }: { children: ReactNode }) => {
         }
     });
 
+    const [recentlyViewed, setRecentlyViewed] = useState<ListItem[]>(() => {
+        try {
+            const savedHistory = localStorage.getItem('userHistory');
+            return savedHistory ? JSON.parse(savedHistory) : [];
+        } catch {
+            return [];
+        }
+    });
+
     useEffect(() => {
         localStorage.setItem('userLists', JSON.stringify(lists));
     }, [lists]);
+
+    useEffect(() => {
+        localStorage.setItem('userHistory', JSON.stringify(recentlyViewed));
+    }, [recentlyViewed]);
 
     const addToList = (item: ListItem, listType: ListType) => {
         setLists(prev => {
@@ -66,6 +81,13 @@ export const ListProvider = ({ children }: { children: ReactNode }) => {
         }));
     };
 
+    const addToHistory = (item: ListItem) => {
+        setRecentlyViewed(prev => {
+            const filtered = prev.filter(i => i.id !== item.id);
+            return [item, ...filtered].slice(0, 20); // Keep last 20 items
+        });
+    };
+
     const checkListStatus = (id: number): ListType | null => {
         for (const [type, items] of Object.entries(lists)) {
             if (items.some(item => item.id === id)) {
@@ -76,7 +98,7 @@ export const ListProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <ListContext.Provider value={{ lists, addToList, removeFromList, checkListStatus }}>
+        <ListContext.Provider value={{ lists, recentlyViewed, addToList, removeFromList, checkListStatus, addToHistory }}>
             {children}
         </ListContext.Provider>
     );

@@ -34,7 +34,7 @@ const MovieDetails = () => {
     const [selectedSeason, setSelectedSeason] = useState(1);
     const [selectedEpisode, setSelectedEpisode] = useState(1);
     const [episodes, setEpisodes] = useState<Episode[]>([]);
-    const { addToList, checkListStatus } = useList();
+    const { addToList, checkListStatus, addToHistory } = useList();
     const { isLoggedIn } = useAuth();
     const navigate = useNavigate();
 
@@ -106,6 +106,18 @@ const MovieDetails = () => {
 
         fetchDetails();
     }, [id, mediaType]);
+
+    useEffect(() => {
+        if (movie && id) {
+            addToHistory({
+                id: Number(id),
+                title: movie.title || movie.name || '',
+                poster_path: movie.poster_path || '',
+                media_type: mediaType,
+                vote_average: movie.vote_average
+            });
+        }
+    }, [movie, id, mediaType, addToHistory]);
 
     // ... handle handleAddToList ...
 
