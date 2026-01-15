@@ -42,27 +42,30 @@ const MyList = () => {
     return (
         <div className="pt-24 pb-20 min-h-screen bg-primary">
             <div className="max-w-7xl mx-auto px-4 md:px-12">
-                <h1 className="text-3xl font-bold text-white mb-8">My List</h1>
+
 
                 {/* Tabs */}
-                <div className="flex flex-wrap gap-4 mb-8 border-b border-gray-800 pb-4">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative ${activeTab === tab.id ? 'text-white' : 'text-gray-400 hover:text-white'
-                                }`}
-                        >
-                            {tab.label}
-                            {activeTab === tab.id && (
-                                <motion.div
-                                    layoutId="activeTab"
-                                    className="absolute inset-0 bg-white/10 rounded-full"
-                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                />
-                            )}
-                        </button>
-                    ))}
+                <div className="flex flex-wrap items-center gap-6 md:gap-8 mb-8 border-b border-gray-800 pb-4 overflow-x-auto">
+                    {tabs.map((tab) => {
+                        const isActive = activeTab === tab.id;
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className="relative group flex items-center gap-3 transition-all duration-300"
+                            >
+                                {/* Accent Bar for Active Tab */}
+                                <div className={`h-6 w-1 bg-accent rounded-full transition-all duration-300 ${isActive ? 'opacity-100 h-8' : 'opacity-0 h-0'}`} />
+
+                                <span className={`text-sm md:text-lg font-bold uppercase tracking-wide transition-all duration-300 ${isActive
+                                    ? 'bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-500 scale-105'
+                                    : 'text-gray-500 hover:text-white'
+                                    }`}>
+                                    {tab.label}
+                                </span>
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* Content */}

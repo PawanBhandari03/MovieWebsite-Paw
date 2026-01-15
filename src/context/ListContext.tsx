@@ -84,7 +84,7 @@ export const ListProvider = ({ children }: { children: ReactNode }) => {
     const addToHistory = (item: ListItem) => {
         setRecentlyViewed(prev => {
             const filtered = prev.filter(i => i.id !== item.id);
-            return [item, ...filtered].slice(0, 20); // Keep last 20 items
+            return [item, ...filtered].slice(0, 8); // Keep last 8 items
         });
     };
 

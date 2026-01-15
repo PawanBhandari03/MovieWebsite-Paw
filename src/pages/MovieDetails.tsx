@@ -220,9 +220,9 @@ const MovieDetails = () => {
             {/* Full Width Player Section */}
             <div className="w-full bg-black h-[60vh] md:h-screen relative group">
                 <div className="absolute top-4 left-4 z-20">
-                    <Link to="/home" className="inline-flex items-center gap-2 text-white/80 hover:text-white bg-black/50 p-2 rounded-full backdrop-blur-sm transition-colors">
+                    <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-white/80 hover:text-white bg-black/50 p-2 rounded-full backdrop-blur-sm transition-colors">
                         <ArrowLeft className="w-6 h-6" />
-                    </Link>
+                    </button>
                 </div>
 
                 {renderPlayer()}
