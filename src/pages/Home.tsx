@@ -50,9 +50,9 @@ const Home = () => {
                     {trendingMovies.length > 0 && <MovieSlider title="Trending Movies" movies={trendingMovies} />}
                 </div>
 
-                {trendingAnime.length > 0 && <MovieSlider title="Trending Anime" movies={trendingAnime} />}
-                <MovieSlider title="Trending Web Series" movies={trendingSeries} />
-                <MovieSlider title="Trending Drama" movies={trendingDrama} />
+                {trendingAnime.length > 0 && <MovieSlider title="Trending Anime" movies={trendingAnime} mediaType="tv" />}
+                <MovieSlider title="Trending Web Series" movies={trendingSeries} mediaType="tv" />
+                <MovieSlider title="Trending Drama" movies={trendingDrama} mediaType="tv" />
             </div>
         </div>
     );
