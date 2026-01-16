@@ -42,8 +42,8 @@ function App() {
               <Route path="/auth" element={<Auth />} />
               <Route path="/search" element={<Search />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/movie/:id" element={<MovieDetails />} />
-              <Route path="/tv/:id" element={<MovieDetails />} />
+              <Route path="/movie/:id" element={<MovieDetails key="movie" />} />
+              <Route path="/tv/:id" element={<MovieDetails key="tv" />} />
             </Routes>
           </Layout>
         </Router>

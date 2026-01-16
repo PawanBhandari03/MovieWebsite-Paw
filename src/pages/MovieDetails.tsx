@@ -411,10 +411,12 @@ const MovieDetails = () => {
                     <div className="w-full overflow-x-auto pb-8 scrollbar-hide">
                         <div className="flex px-4 md:px-4 gap-4 min-w-max">
                             {movie.similar.results.map((similarMovie) => (
-                                <Link
-                                    to={`/${similarMovie.media_type || 'movie'}/${similarMovie.id}`}
+                                <div
                                     key={similarMovie.id}
-                                    className="block group w-[160px] md:w-[240px] flex-shrink-0"
+                                    onClick={() => {
+                                        window.location.href = `/${similarMovie.media_type || mediaType || 'movie'}/${similarMovie.id}`;
+                                    }}
+                                    className="block group w-[160px] md:w-[240px] flex-shrink-0 cursor-pointer"
                                 >
                                     <div className="aspect-[2/3] rounded-xl overflow-hidden relative mb-3 shadow-[0_0_15px_rgba(0,0,0,0.5)] border border-gray-800 group-hover:border-gray-600 transition-all">
                                         <img
@@ -438,7 +440,7 @@ const MovieDetails = () => {
                                         <span>•</span>
                                         <span>{new Date(similarMovie.release_date || similarMovie.first_air_date || Date.now()).getFullYear()}</span>
                                     </div>
-                                </Link>
+                                </div>
                             ))}
                         </div>
                     </div>
