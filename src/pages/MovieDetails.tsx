@@ -4,6 +4,7 @@ import { useList, type ListType } from '../context/ListContext';
 import { useAuth } from '../context/AuthContext';
 import { useEffect, useState } from 'react';
 import { getMovieDetails, getTVDetails, getTVSeasonDetails, type TMDBMovie } from '../services/tmdb';
+import MovieSlider from '../components/MovieSlider';
 
 interface TVShowDetails extends TMDBMovie {
     seasons?: {
@@ -401,49 +402,14 @@ const MovieDetails = () => {
                 </div>
             )}
 
-            {/* Recommendations Section - Full Width Edge to Edge */}
+            {/* Recommendations Section - Using reusable MovieSlider for consistent scroll behavior */}
             {movie.similar && movie.similar.results.length > 0 && (
-                <div className="w-full py-12">
-                    <div className="px-4 md:px-12 mb-6">
-                        <h2 className="text-2xl font-bold text-white">Recommendation</h2>
-                    </div>
-
-                    <div className="w-full overflow-x-auto pb-8 scrollbar-hide">
-                        <div className="flex px-4 md:px-4 gap-4 min-w-max">
-                            {movie.similar.results.map((similarMovie) => (
-                                <div
-                                    key={similarMovie.id}
-                                    onClick={() => {
-                                        window.location.href = `/${similarMovie.media_type || mediaType || 'movie'}/${similarMovie.id}`;
-                                    }}
-                                    className="block group w-[160px] md:w-[240px] flex-shrink-0 cursor-pointer"
-                                >
-                                    <div className="aspect-[2/3] rounded-xl overflow-hidden relative mb-3 shadow-[0_0_15px_rgba(0,0,0,0.5)] border border-gray-800 group-hover:border-gray-600 transition-all">
-                                        <img
-                                            src={`https://image.tmdb.org/t/p/w400${similarMovie.poster_path}`}
-                                            alt={similarMovie.title || similarMovie.name}
-                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                            loading="lazy"
-                                        />
-                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                                            <div className="w-12 h-12 rounded-full bg-accent/90 flex items-center justify-center shadow-lg transform scale-0 group-hover:scale-100 transition-transform duration-300">
-                                                <Play className="w-6 h-6 text-primary fill-current ml-1" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h3 className="text-white font-medium truncate group-hover:text-accent transition-colors">
-                                        {similarMovie.title || similarMovie.name}
-                                    </h3>
-                                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                                        <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                                        <span>{similarMovie.vote_average.toFixed(1)}</span>
-                                        <span>•</span>
-                                        <span>{new Date(similarMovie.release_date || similarMovie.first_air_date || Date.now()).getFullYear()}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                <div className="w-full px-4 md:px-12 pb-12">
+                    <MovieSlider
+                        title="Recommendations"
+                        movies={movie.similar.results}
+                        mediaType={mediaType}
+                    />
                 </div>
             )}
         </div>
