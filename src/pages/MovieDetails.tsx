@@ -1,5 +1,5 @@
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Play, Star, Plus, Check, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Play, Star, Plus, Check, ChevronDown, Search } from 'lucide-react';
 import { useList, type ListType } from '../context/ListContext';
 import { useAuth } from '../context/AuthContext';
 import { useEffect, useState } from 'react';
@@ -260,7 +260,7 @@ const MovieDetails = () => {
                                 )}
                                 <span className="flex items-center gap-1 text-yellow-400 font-semibold">
                                     <Star className="w-4 h-4 fill-current" />
-                                    {movie.vote_average.toFixed(1)}
+                                    {movie.vote_average > 0 ? movie.vote_average.toFixed(1) : 'N/A'}
                                 </span>
                                 {movie.runtime && (
                                     <span className="text-gray-400">{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span>
@@ -310,7 +310,7 @@ const MovieDetails = () => {
 
 
                             <p className="text-gray-300 text-base md:text-lg leading-relaxed">
-                                {movie.overview}
+                                {movie.overview || "No specific overview available for this title."}
                             </p>
                         </div>
 
@@ -355,12 +355,13 @@ const MovieDetails = () => {
                     {/* Right Column: Sidebar (Trailer, Cast, Recommendations) */}
                     <div className="space-y-8">
                         {/* Trailer Section (Sidebar on desktop) */}
-                        {trailer && (
-                            <div className="w-full lg:w-full flex-shrink-0">
-                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                    <Play className="w-5 h-5 text-red-500 fill-current" />
-                                    Trailer
-                                </h3>
+                        {/* Trailer Section (Sidebar on desktop) */}
+                        <div className="w-full lg:w-full flex-shrink-0">
+                            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <Play className="w-5 h-5 text-red-500 fill-current" />
+                                Trailer
+                            </h3>
+                            {trailer ? (
                                 <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg border border-gray-800 bg-black">
                                     <iframe
                                         src={`https://www.youtube.com/embed/${trailer.key}`}
@@ -370,8 +371,21 @@ const MovieDetails = () => {
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     />
                                 </div>
-                            </div>
-                        )}
+                            ) : (
+                                <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg border border-gray-800 bg-black/40 flex flex-col items-center justify-center p-6 text-center">
+                                    <p className="text-gray-400 mb-4">No specific trailer available</p>
+                                    <a
+                                        href={`https://www.youtube.com/results?search_query=${encodeURIComponent(`${movie.title || movie.name} ${new Date(movie.release_date || movie.first_air_date || Date.now()).getFullYear()} trailer`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors font-medium"
+                                    >
+                                        <Search className="w-4 h-4" />
+                                        Search on YouTube
+                                    </a>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -409,6 +423,7 @@ const MovieDetails = () => {
                         title="Recommendations"
                         movies={movie.similar.results}
                         mediaType={mediaType}
+                        forceReload={true}
                     />
                 </div>
             )}

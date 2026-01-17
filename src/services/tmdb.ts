@@ -57,19 +57,19 @@ const tmdb = axios.create({
 
 export const getTrendingMoviesToday = async (): Promise<TMDBMovie[]> => {
     const response = await tmdb.get<TMDBResponse>('/trending/movie/day');
-    return response.data.results.filter(movie => movie.poster_path);
+    return response.data.results;
 };
 
 export const getTrendingMovies = async (): Promise<TMDBMovie[]> => {
     const response = await tmdb.get<TMDBResponse>('/trending/movie/week');
-    return response.data.results.filter(movie => movie.poster_path);
+    return response.data.results;
 };
 
 export const getPopularMovies = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/movie/popular', { params: { page } });
     return {
         ...response.data,
-        results: response.data.results.filter(movie => movie.poster_path)
+        results: response.data.results
     };
 };
 
@@ -77,7 +77,7 @@ export const getTopRatedMovies = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/movie/top_rated', { params: { page } });
     return {
         ...response.data,
-        results: response.data.results.filter(movie => movie.poster_path)
+        results: response.data.results
     };
 };
 
@@ -85,7 +85,7 @@ export const getUpcomingMovies = async (page = 1): Promise<TMDBResponse> => {
     const response = await tmdb.get<TMDBResponse>('/movie/upcoming', { params: { page } });
     return {
         ...response.data,
-        results: response.data.results.filter(movie => movie.poster_path)
+        results: response.data.results
     };
 };
 
@@ -93,7 +93,7 @@ export const searchMovies = async (query: string, page = 1): Promise<TMDBRespons
     const response = await tmdb.get<TMDBResponse>('/search/movie', { params: { query, page } });
     return {
         ...response.data,
-        results: response.data.results.filter(movie => movie.poster_path)
+        results: response.data.results
     };
 };
 
@@ -102,7 +102,7 @@ export const searchMulti = async (query: string, page = 1): Promise<TMDBResponse
     return {
         ...response.data,
         results: response.data.results.filter(item =>
-            item.poster_path && (item.media_type === 'movie' || item.media_type === 'tv')
+            (item.media_type === 'movie' || item.media_type === 'tv')
         )
     };
 };
@@ -119,7 +119,6 @@ export const getWebSeries = async (page = 1): Promise<TMDBResponse> => {
     return {
         ...response.data,
         results: response.data.results.filter(show =>
-            show.poster_path &&
             show.original_language !== 'ja' && // Exclude Anime
             show.original_language !== 'ko'    // Exclude Kdrama
         )
@@ -137,7 +136,7 @@ export const getDramas = async (page = 1): Promise<TMDBResponse> => {
     });
     return {
         ...response.data,
-        results: response.data.results.filter(show => show.poster_path)
+        results: response.data.results
     };
 };
 
@@ -152,7 +151,7 @@ export const getAnime = async (page = 1): Promise<TMDBResponse> => {
     });
     return {
         ...response.data,
-        results: response.data.results.filter(show => show.poster_path)
+        results: response.data.results
     };
 };
 
@@ -160,6 +159,7 @@ export const getMovieDetails = async (id: string | number) => {
     const response = await tmdb.get(`/movie/${id}`, {
         params: {
             append_to_response: 'credits,similar,videos',
+            include_video_language: 'en,null',
         },
     });
     return response.data;
@@ -169,6 +169,7 @@ export const getTVDetails = async (id: number) => {
     const response = await tmdb.get(`/tv/${id}`, {
         params: {
             append_to_response: 'credits,similar,videos',
+            include_video_language: 'en,null',
         },
     });
     return response.data;
@@ -194,7 +195,7 @@ export const getDiscoverMovies = async (genreId: number | string, page = 1): Pro
     });
     return {
         ...response.data,
-        results: response.data.results.filter(movie => movie.poster_path)
+        results: response.data.results
     };
 };
 
@@ -209,7 +210,7 @@ export const getDiscoverTV = async (genreId: number | string, page = 1): Promise
     });
     return {
         ...response.data,
-        results: response.data.results.filter(show => show.poster_path)
+        results: response.data.results
     };
 };
 
@@ -224,6 +225,6 @@ export const getDiscoverAnime = async (genreId: number | string, page = 1): Prom
     });
     return {
         ...response.data,
-        results: response.data.results.filter(show => show.poster_path)
+        results: response.data.results
     };
 };

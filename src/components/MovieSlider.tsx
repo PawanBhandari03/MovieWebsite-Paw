@@ -7,9 +7,10 @@ interface MovieSliderProps {
     title: string;
     movies: TMDBMovie[];
     mediaType?: 'movie' | 'tv';
+    forceReload?: boolean;
 }
 
-const MovieSlider = ({ title, movies, mediaType }: MovieSliderProps) => {
+const MovieSlider = ({ title, movies, mediaType, forceReload }: MovieSliderProps) => {
     const sliderRef = useRef<HTMLDivElement>(null);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
@@ -79,11 +80,12 @@ const MovieSlider = ({ title, movies, mediaType }: MovieSliderProps) => {
                                 title={movie.title || movie.name || 'Unknown'}
                                 image={getImageUrl(movie.poster_path)}
                                 rating={movie.vote_average}
-                                year={new Date(movie.release_date || movie.first_air_date || new Date().toISOString()).getFullYear()}
+                                year={(movie.release_date || movie.first_air_date) ? new Date(movie.release_date || movie.first_air_date || '').getFullYear() : 'N/A'}
                                 category={mediaType === 'tv' || movie.media_type === 'tv' ? 'TV Show' : 'Movie'}
                                 mediaType={mediaType || (movie.media_type === 'tv' ? 'tv' : 'movie')}
                                 overview={movie.overview}
                                 genreIds={movie.genre_ids}
+                                forceReload={forceReload}
                             />
                         </div>
                     ))}

@@ -17,14 +17,15 @@ interface MovieProps {
     title: string;
     image: string;
     rating: number;
-    year: number;
+    year: number | string;
     category: string;
     mediaType?: 'movie' | 'tv';
     overview?: string;
     genreIds?: number[];
+    forceReload?: boolean;
 }
 
-const MovieCard = ({ id, title, image, rating, year, category, mediaType, overview, genreIds }: MovieProps) => {
+const MovieCard = ({ id, title, image, rating, year, category, mediaType, overview, genreIds, forceReload }: MovieProps) => {
     const linkPath = mediaType === 'tv' ? `/tv/${id}` : `/movie/${id}`;
     const genres = genreIds?.slice(0, 3).map(id => GENRES[id]).filter(Boolean).join(' • ');
 
@@ -71,9 +72,13 @@ const MovieCard = ({ id, title, image, rating, year, category, mediaType, overvi
     const currentStatus = checkListStatus(Number(id));
 
     return (
-        <Link to={linkPath} state={{ title, image, rating, year, category, mediaType }}
+        <Link
+            to={linkPath}
+            state={{ title, image, rating, year, category, mediaType }}
+            reloadDocument={forceReload}
             className="block w-full h-full"
-            onMouseLeave={() => setShowListMenu(false)}>
+            onMouseLeave={() => setShowListMenu(false)}
+        >
             <div className="group/card relative aspect-[2/3.4] w-full rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/50 z-10 hover:z-20 border border-transparent hover:border-gray-700">
                 {/* Main Image */}
                 <img
