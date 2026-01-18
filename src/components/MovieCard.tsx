@@ -124,8 +124,8 @@ const MovieCard = ({ id, title, image, rating, year, category, mediaType, overvi
                     <div className="translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300">
                         {/* Header Row */}
                         <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2 text-green-400 font-bold text-xs">
-                                <span>{rating.toFixed(1)} Match</span>
+                            <div className="flex items-center gap-2 text-yellow-400 font-bold text-xs">
+                                <span>{rating.toFixed(1)}</span>
                                 <span className="px-1.5 py-0.5 border border-gray-500 rounded text-gray-300 font-normal">{year}</span>
                             </div>
 
