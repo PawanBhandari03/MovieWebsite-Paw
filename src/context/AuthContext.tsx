@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+/* eslint-disable react-refresh/only-export-components */
 import { auth } from '../lib/firebase';
 import {
     createUserWithEmailAndPassword,
@@ -11,14 +12,7 @@ import {
     sendPasswordResetEmail
 } from 'firebase/auth';
 import { googleProvider } from '../lib/firebase';
-
-export interface User {
-    name: string;
-    username: string;
-    email: string;
-    bio?: string;
-    emailVerified: boolean;
-}
+import type { User } from '../types';
 
 interface AuthContextType {
     isLoggedIn: boolean;
@@ -129,8 +123,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 localStorage.removeItem('userLists'); // Clear local data
                 setUser(null);
                 setIsLoggedIn(false);
-            } catch (error: any) {
-                if (error.code === 'auth/requires-recent-login') {
+            } catch (error: unknown) {
+                // Safe error handling for Firebase auth errors
+                const firebaseError = error as { code?: string };
+                if (firebaseError.code === 'auth/requires-recent-login') {
                     throw new Error("Security check: Please log out and log back in to delete your account.");
                 }
                 throw error;

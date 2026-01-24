@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useList, type ListType } from '../context/ListContext';
+import { useList } from '../context/ListContext';
+import type { ListType } from '../types';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';

@@ -1,14 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-
-export type ListType = 'watched' | 'watching' | 'pending' | 'favourites';
-
-export interface ListItem {
-    id: number;
-    title: string;
-    poster_path: string;
-    media_type: 'movie' | 'tv';
-    vote_average: number;
-}
+/* eslint-disable react-refresh/only-export-components */
+import type { ListType, ListItem } from '../types';
 
 interface ListContextType {
     lists: Record<ListType, ListItem[]>;

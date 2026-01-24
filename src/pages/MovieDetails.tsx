@@ -1,6 +1,7 @@
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Star, Plus, Check, ChevronDown, Search } from 'lucide-react';
-import { useList, type ListType } from '../context/ListContext';
+import { useList } from '../context/ListContext';
+import type { ListType } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { useEffect, useState } from 'react';
 import { getMovieDetails, getTVDetails, getTVSeasonDetails, type TMDBMovie } from '../services/tmdb';
@@ -96,9 +97,10 @@ const MovieDetails = () => {
                         console.warn("Failed to fetch season details", e);
                     }
                 }
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error("Failed to fetch details:", error);
-                setError(error.message || "Failed to load content");
+                const errorMessage = error instanceof Error ? error.message : "Failed to load content";
+                setError(errorMessage);
                 setMovie(null);
             } finally {
                 setIsLoading(false);

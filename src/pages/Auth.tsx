@@ -27,9 +27,10 @@ const Auth = () => {
             // We use email for login in Firebase
             await login({ name: 'User', username: '', email: username.includes('@') ? username : '', emailVerified: false }, password);
             navigate('/profile');
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            if (err.code === 'auth/invalid-credential') {
+            const firebaseError = err as { code?: string };
+            if (firebaseError.code === 'auth/invalid-credential') {
                 setError('Invalid email or password');
             } else {
                 setError('Failed to login. Please check your credentials.');
@@ -57,11 +58,12 @@ const Auth = () => {
             try {
                 await register({ name, username, email, emailVerified: false }, password);
                 setStep('VERIFY');
-            } catch (err: any) {
+            } catch (err: unknown) {
                 console.error(err);
-                if (err.code === 'auth/email-already-in-use') {
+                const firebaseError = err as { code?: string };
+                if (firebaseError.code === 'auth/email-already-in-use') {
                     setError('Email is already in use');
-                } else if (err.code === 'auth/weak-password') {
+                } else if (firebaseError.code === 'auth/weak-password') {
                     setError('Password should be at least 6 characters');
                 } else {
                     setError('Failed to create account. Please try again.');
@@ -107,9 +109,10 @@ const Auth = () => {
             await resetPassword(email);
             setStep('LOGIN');
             alert('Password reset link sent to your email');
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            if (err.code === 'auth/user-not-found') {
+            const firebaseError = err as { code?: string };
+            if (firebaseError.code === 'auth/user-not-found') {
                 setError('No account found with this email');
             } else {
                 setError('Failed to send reset link');

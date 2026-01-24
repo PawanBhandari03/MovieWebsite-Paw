@@ -187,8 +187,12 @@ const Profile = () => {
                                     try {
                                         await deleteAccount();
                                         navigate('/');
-                                    } catch (error: any) {
-                                        alert(error.message);
+                                    } catch (error: unknown) {
+                                        if (error instanceof Error) {
+                                            alert(error.message);
+                                        } else {
+                                            alert("An unknown error occurred");
+                                        }
                                     }
                                 }
                             }}

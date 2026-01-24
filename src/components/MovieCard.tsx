@@ -1,7 +1,8 @@
 
 import { Star, Play, Bookmark, Heart, Eye, Clock, Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useList, type ListType } from '../context/ListContext';
+import { useList } from '../context/ListContext';
+import type { ListType } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 

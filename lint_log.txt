@@ -1,0 +1,13 @@
+﻿
+> movie-app@0.0.0 lint
+> eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+
+
+C:\Users\bhand\New folder\src\context\AuthContext.tsx
+  149:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\bhand\New folder\src\context\ListContext.tsx
+  98:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+Γ£û 2 problems (2 errors, 0 warnings)
+
