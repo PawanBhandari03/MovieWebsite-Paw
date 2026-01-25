@@ -195,7 +195,6 @@ const MovieDetails = () => {
                 src={embedUrl}
                 className="w-full h-full"
                 allowFullScreen
-                sandbox="allow-forms allow-scripts allow-same-origin allow-presentation"
                 allow="autoplay; encrypted-media; picture-in-picture"
                 referrerPolicy="origin"
                 title="Player"
