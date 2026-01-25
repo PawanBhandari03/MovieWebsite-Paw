@@ -52,6 +52,9 @@ const LandingPage = () => {
                                 Go to Homepage <ArrowRight size={24} />
                             </motion.button>
                         </Link>
+                        <p className="mt-4 text-sm text-gray-500 font-medium">
+                            <span className="text-accent">*</span> For the best experience, use an ad-blocker or Brave browser
+                        </p>
                     </motion.div>
                 </div>
             </section>

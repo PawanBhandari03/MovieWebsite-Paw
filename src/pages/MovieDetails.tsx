@@ -245,6 +245,13 @@ const MovieDetails = () => {
                 )}
             </div>
 
+            {/* Ad-blocker Disclaimer */}
+            <div className="w-full bg-black/80 py-2 text-center border-b border-gray-800">
+                <p className="text-sm text-gray-400">
+                    <span className="text-accent">*</span> For the best experience, use an ad-blocker or Brave browser
+                </p>
+            </div>
+
             {/* Content Grid */}
             <div className="w-full px-4 md:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
